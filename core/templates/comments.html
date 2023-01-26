@@ -1,0 +1,57 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+<div class="bg-black">
+    <div class="bg-gray-900 flex justify-center mx-auto max-w-6xl">
+        <div class="mt-60">
+            <div class="mb-60 flex justify-center space-x-4 mx-8">
+                <img src="{{post.profile.profile_pics.url}}" alt="" class="w-32 h-32 rounded-full">
+                <a class="text-blue-600 font-bold" href="{%url 'core:profile' username=post.user%}">@{{post.user}}</a>
+                <p class="text-white">{{post.caption}}</p>   
+            </div>
+            {%if all_comments %}
+                {%for all_comment in all_comments reversed%}
+                <div class="flex-col pb-5 mx-8">
+                    <div>
+                        <a href="{%url 'core:profile' username=all_comment.author%}"><img src="{{all_comment.profile.profile_pics.url}}" class="w-14 h-14 rounded-full" alt=""></a>
+                    </div>
+                    <div class="space-x-4">    
+                        <div>
+                            <a href="{%url 'core:profile' username=all_comment.author%}"><span class="text-blue-600 font-bold">@{{all_comment.author}}</span></a><span class=" text-white break-words">&nbsp;&nbsp;&nbsp;{{all_comment.comments}}</span>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+            {%endif%}
+            <hr> 
+            <form action="" class="items-center mb-14 mt-7 space-x-4" method="post">{%csrf_token%}
+                <textarea id="comment" name="comments" cols="100" rows="5" class="resize-none px-4 py-2 rounded-lg" placeholder="Add a comment"></textarea>
+                <input disabled class="text-black bg-gray-300 px-3 rounded-full" id="submit_button" type="submit" value="Post">
+            </form>
+        </div>  
+    </div>
+</div>
+
+{%include 'partials/footnote.html'%}
+<script type="text/javascript">
+    //event listener to enable and disable the post button
+    const comment = document.getElementById('comment')
+    const searchbutton = document.getElementById('submit_button')
+
+    comment.addEventListener('keyup', (e)=>{
+        const value = e.currentTarget.value;
+        if(value==""){
+            submit_button.classList.replace("bg-blue-600", 'bg-gray-300')
+            submit_button.classList.replace("text-white", 'text-black')
+            submit_button.disabled = true
+        }
+        else{
+            submit_button.classList.replace('bg-gray-300', "bg-blue-600")
+            submit_button.classList.replace('text-black', "text-white")
+            submit_button.disabled = false
+            
+        }
+    })
+
+</script>
+{%endblock%}

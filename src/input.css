@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#bio{
+    grid-template-rows: max-content;
+    grid-template-columns: max-content;
+}
+
+.profile_img{
+    border-radius:100%;
+
+}

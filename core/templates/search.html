@@ -1,0 +1,64 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+<div class="bg-black">
+    <div class="h-screen flex justify-center max-w-6xl container mx-auto bg-gray-900">
+        <div class="text-white text-2xl">
+            {%include 'partials/navbar.html'%}
+        </div>
+        <div class="border-l-2 border-gray-600 w-full">
+            <div class="flex items-center space-x-10 px-2 pt-6 justify-center">
+                <form action="" method="POST">{%csrf_token%}
+                    <input id="searcharea" type="text" name="search" placeholder="Search..." class="p-2 pl-4 text-gray-700 rounded-full bg-gray-100 w-96">
+                    <input disabled id="searchbutton" type="submit" value="Search" class="ml-8 p-2 bg-gray-300 rounded-full text-black cursor-pointer shadow-white shadow-sm">   
+                </form>
+            </div>
+            <hr class="mt-6">
+            <div>
+                <p class="text-white px-10 py-4 font-semibold">Suggested For You</p>
+                {%for other_profile in other_profiles%}
+                <div class="flex justify-center">
+                    <div class="flex justify-between bg-gray-100 m-7 p-4 rounded-md w-2/3">
+                        <a href="{% url 'core:profile' username=other_profile.user.username %}">
+                            <div>
+                                <p class="pl-2 pb-2 font-semibold">@{{other_profile.user.username}}</p>
+                                <img src="{{other_profile.profile_pics.url}}" class="profile_img w-24 h-24" alt="">
+                            </div>
+                        </a>
+                        <span>
+                            <a href="{% url 'core:profile' username=other_profile.user.username %}" name="username">
+                                <p class="bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
+                                    View Profile
+                                </p>
+                            </a>      
+                        </span>
+                    </div>
+                </div>     
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+{%include 'partials/footnote.html'%}
+<script type="text/javascript">
+    //event listener to enable and disable the search button
+    const searcharea = document.getElementById('searcharea')
+    const searchbutton = document.getElementById('searchbutton')
+
+    searcharea.addEventListener('keyup', (e)=>{
+        const value = e.currentTarget.value;
+        if(value==""){
+            searchbutton.classList.replace("bg-blue-600", 'bg-gray-300')
+            searchbutton.classList.replace("text-white", 'text-black')
+            searchbutton.disabled = true
+        }
+        else{
+            searchbutton.classList.replace('bg-gray-300', "bg-blue-600")
+            searchbutton.classList.replace('text-black', "text-white")
+            searchbutton.disabled = false
+            
+        }
+    })
+
+</script>
+{%endblock%}

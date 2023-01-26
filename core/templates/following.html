@@ -1,0 +1,47 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+<div class="bg-black">
+    <div class="flex justify-center items-center max-w-6xl mx-auto bg-gray-900">
+        <div class="text-white text-2xl -mt-96 mb-96">
+            {%include 'partials/navbar.html'%}
+        </div>
+        <div class="border-x-2 border-gray-600 w-full h-screen">
+            <div class="flex text-white justify-between mb-3 px-10 text-xl font-semibold border-b-2 border-gray-600 pb-2">
+                <a href="followers?username={{user_profile.user.username}}" class="hover:bg-gray-800 px-10 py-2">Followers</a>
+                <a href="following?username={{user_profile.user.username}}" class="hover:bg-gray-800 px-10 py-2 text-blue-600">Following</a>
+            </div>
+            {%if profiles%}
+                {%for profile in profiles reversed%}
+                <div class="flex justify-between py-4 px-8 ">
+                    <div>
+                        <a href="{%url 'core:profile' username=profile.user.username%}" class="flex space-x-3">
+                            <img class="rounded-full w-14 h-14" src="{{profile.profile_pics.url}}" alt="profile_image">
+                            <div>
+                                <p class="font-semibold text-white">@{{profile.user.username}}</p>
+                                <span class="flex space-x-2">
+                                    <p class="text-gray-400 first-letter:uppercase">{{profile.name_first}}</p>
+                                    <p class="text-gray-400 first-letter:uppercase">{{profile.name_last}}</p>
+                                </span>
+                            </div>    
+                        </a>
+                    </div>
+                    <div class="font-semibold pb-2 text-red-500 pr-6">
+                        <a href="/follow?username={{profile.user.username}}"><p class="px-2 bg-gray-300 rounded-md duration-300 hover:bg-gray-200">Unfollow</p></a>
+                    </div>
+                </div>
+                {%endfor%}     
+            {%else%}
+            <div class="mt-20 flex justify-center text-gray-200">
+                <div class="flex flex-col items-center">
+                    <a href="{%url 'core:search'%}"><i class="fa-solid fa-user-plus text-7xl p-10 border-2 border-gray-200 rounded-full w-40 h-40"></i></a>
+                    <p class="font-semibold text-5xl py-10">Accounts You Follow</p>
+                    <p class="flex text-center text-lg">Once you follow accounts, you'll see them here.</p>
+                </div>   
+            </div>    
+            {%endif%}
+        </div>  
+    </div>
+    {%include 'partials/footnote.html'%}
+</div>
+{%endblock%}

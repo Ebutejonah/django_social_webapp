@@ -1,0 +1,6 @@
+<select required name="country" class="border-2 mt-5 px-3">
+    <option>Select Country</option>
+    {% for country in countries %}
+        <option value="{{country.pk}}">{{country.country}}</option>
+    {% endfor %}
+</select>

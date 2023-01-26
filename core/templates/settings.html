@@ -1,0 +1,60 @@
+{%extends 'base.html'%}
+{%load static%}
+
+{%block content%}
+<div class="bg-black">
+    <div class="bg-gray-900 max-w-4xl py-10 mx-auto justify-center container px-4">
+        <div class="flex justify-between pb-3">
+            <span>
+                <a href="/" class="text-white flex p-2 items-center px-2 border-2 rounded-full bg-blue-600 hover:bg-blue-500 duration-500">Home</a>
+            </span>
+            <span>
+                <p class="font-semibold uppercase text-2xl text-white">{{user_profile.name_last}}&nbsp;&nbsp;{{user_profile.name_first}}</p>
+                <p class="text-gray-300 text-center">@{{user_profile.user.username}}</p>
+            </span>       
+        </div>
+        <form action="" method="POST" id="form_data" enctype="multipart/form-data">{%csrf_token%} 
+            <div>
+                <a href="{{user_profile.background_profile_pics.url}}">
+                    <img src="{{user_profile.background_profile_pics.url}}" class="rounded-lg object-cover w-full h-80" alt="Background Image">
+                </a>    
+                <input type="file" class="pt-2 text-white" name="bg_pics">
+            </div>
+            <div class ="flex justify-end -mt-20">
+                <div>
+                    <a href="{{user_profile.profile_pics.url}}">
+                        <img src="{{user_profile.profile_pics.url}}" class="profile_img w-32 h-32 border-2 border-gray-500" alt="Profile Image">
+                    </a>
+                    <input type="file" class="pt-2 text-white" name="profile_pic">
+                </div>   
+            </div> 
+            <p class="font-semibold text-gray-300 flex justify-center mt-10 text-xl">BIO</p> 
+            <textarea id='bio' class="w-full h-44 border-2 resize-none mt-5 px-3" type="text" placeholder="Bio" name="bio">{{user_profile.bio}}</textarea>
+            <select required name="continent" class="border-2 mt-5 px-3" hx-get="{% url 'core:countries' %}" hx-trigger="change" hx-target="#countries">
+                <option>Select Continent</option>
+                {% for continent in continents %}
+                    <option value="{{continent.pk}}">{{continent.continent}}</option>
+                {% endfor %}
+            </select>
+            <div id="countries">
+                {% include 'partials/countries.html' %}
+            </div>
+            <div class="flex justify-between mt-7 mb-20">
+                <a href="{% url 'core:profile' username=user_object.username %}">
+                    <p id="cancel" class="text-black border-2 border-black bg-white rounded-full px-2 hover:bg-red-400 hover:text-white duration-300 cursor-pointer">Cancel</p>
+                </a>
+                <input class="text-black bg-white rounded-full border-2 border-black px-3 cursor-pointer hover:bg-blue-600 hover:text-white duration-500" type="submit" value="Save">
+            </div>
+        </form>    
+    </div>
+</div>
+{%include 'partials/footnote.html'%}
+<script type="text/javascript">
+    const formdiv = document.getElementById('form_data')
+    const cancel = document.getElementById('cancel')
+
+    cancel.addEventListener('click', ()=>{
+        formdiv.reset()
+    })
+</script>
+{%endblock%}

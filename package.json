@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "tailwindcss": "^3.1.8"
+  },
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./core/static/main.css",
+    "watch": "tailwindcss -i ./src/input.css -o ./core/static/main.css --watch"
+  },
+  "dependencies": {
+    "htmx.org": "^1.8.4"
+  }
+}
