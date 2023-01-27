@@ -15,10 +15,10 @@
             </div>
             <hr class="mt-6">
             <div>
-                <p class="text-white px-10 py-4 font-semibold">Suggested For You</p>
+                <p class="text-white px-32 pt-6 font-semibold">Suggested For You</p>
                 {%for other_profile in other_profiles%}
                 <div class="flex justify-center">
-                    <div class="flex justify-between bg-gray-100 m-7 p-4 rounded-md w-2/3">
+                    <div class="flex justify-between bg-gray-100 m-7 p-4 rounded-md w-3/5">
                         <a href="{% url 'core:profile' username=other_profile.user.username %}">
                             <div>
                                 <p class="pl-2 pb-2 font-semibold">@{{other_profile.user.username}}</p>

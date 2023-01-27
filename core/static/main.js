@@ -65,5 +65,7 @@ for(var e=0;e<postdivi.length;e++){
     somefunction(e);
 }
 
-
+//toggle functionality for light/dark modes
+const sunIcon = document.getElementById('sun')
+const moonIcon = document.getElementById('moon')
 

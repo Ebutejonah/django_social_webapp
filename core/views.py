@@ -354,7 +354,8 @@ def ProfileView(request, username):
                 'user_post_length':user_post_length,
                 'following':following,
                 'is_following':is_following,
-                'followers':followers
+                'followers':followers,
+                'user_object':user_object
             }
     return render(request,'profile.html',context)
 
@@ -425,6 +426,7 @@ def SearchView(request):
 
 @login_required()
 def SearchedUserView(request,name):
+    user_object = User.objects.get(username = request.user.username)
     users = []
     profiless = []
     user_objects = User.objects.filter(username__icontains = name)
@@ -434,7 +436,7 @@ def SearchedUserView(request,name):
         profile = Profile.objects.filter(id_user = ids)
         profiless.append(profile)
     profiless = list(chain(*profiless))
-    context = {'profiles':profiless,'name':name}
+    context = {'profiles':profiless,'name':name,'user_object':user_object}
     return render(request,'searcheduser.html',context)
 
 

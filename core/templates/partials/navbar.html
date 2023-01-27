@@ -7,6 +7,7 @@
     <a href="{%url 'core:search'%}"><i class="fa-solid fa-magnifying-glass text-gray-300 p-4 hover:bg-gray-800 rounded-full"></i></a>
     <a href="{% url 'core:profile' username=user_object.username %}"><i class="fa-solid fa-user text-gray-300 p-4 hover:bg-gray-800 rounded-full"></i></a>
     <a href="{%url 'core:settings'%}"><i class="fa-solid fa-gear p-4 hover:bg-gray-800 text-gray-300 rounded-full"></i></a>
+    <i id="sun" class="fa-solid fa-sun text-white p-4 hover:bg-gray-800 rounded-full"></i><i id="moon" class="fa-solid fa-moon p-4 rounded-full hover:bg-gray-800 w-14 h-14"></i>
     <a href="{%url 'core:logout'%}" class="text-lg font-semibold text-white flex justify-end my-4 border-2 rounded-full p-2 border-gray-400 bg-red-500 hover:bg-red-600 duration-500">Logout</a>
 </div>
 {%endblock%}

@@ -2,11 +2,11 @@
 {%load static%}
 {%block content%}
 <div class="bg-black">
-    <div class="post_id flex justify-center mx-auto bg-gray-900 pb-5 max-w-6xl">
+    <div class="post_id flex justify-center mx-auto bg-gray-100 dark:bg-gray-900 max-w-6xl">
         <div class="text-2xl">
             {%include 'partials/navbar.html'%}
         </div>
-        <div class = "container max-w-xl border-2 rounded-md px-2">
+        <div class = "container max-w-xl border-x-2 px-2 rounded-md border-gray-200 dark:border-gray-700"> 
             <a href="{% url 'core:profile' username=user_object.username %}">
                 <p class="text-blue-600 text-4xl font-bold p-4 cursor-pointer">@{{user_profile.user.username}}</p>
                 <img src="{{user_profile.profile_pics.url}}" class="w-32 h-32 items-center mx-auto profile_img"alt="Image">
@@ -16,14 +16,11 @@
                     {%include 'partials/post.html'%}
                 </div>
             {%else%}
-                <p class="text-gray-300 text-2xl text-center font-semibold mt-32 px-2 pb-4">Welcome to Social Book &nbsp;<i class="fa-solid fa-users text-blue-600 p-4 bg-gray-100 rounded-full"></i></p>
-                <p class="text-gray-400 text-center font-semibold text-xl px-2">Posts you upload and those of accounts you follow will be displayed here.</p>
-            {%endif%}
+                <p class="dark:text-gray-300 text-black text-2xl text-center font-semibold mt-32 px-2 pb-4">Welcome to <span class="text-blue-600 italic">Social Book</span> &nbsp;<i class="fa-solid fa-users text-blue-600 p-4 bg-gray-100 rounded-full"></i></p>
+                <p class="dark:text-gray-400 text-black text-center font-semibold text-xl px-2">Posts you upload and those of accounts you follow will be displayed here.</p>
+            {%endif%}    
         </div>
         <div>
-            <div class="px-2 mr-8">
-                <hr>
-            </div>
             <div class="mr-8 rounded-md px-2">
                 <form action="" id="post_button" method="POST" enctype="multipart/form-data">{%csrf_token%}
                     <textarea id="caption" type="text" autocomplete="off" class="resize-none mt-2 w-96 h-36 border-2 pl-2 rounded-md" name="caption" placeholder="What's on your mind?"></textarea>
@@ -32,16 +29,15 @@
                         <p id="cancelbutton" class="text-black border-2 border-gray-500 rounded-full px-2 bg-gray-100 cursor-pointer hover:bg-red-400 duration-300 hover:text-white">Cancel</p>
                         <input disabled id="post" type="submit" class="rounded-full border-2 cursor-pointer border-gray-500 px-2 text-black bg-gray-100" value="Post">   
                     </div>
-                </form>
-                <hr class="mt-5">
+                </form>    
             </div>
             <div>
-                <p class="text-white px-2 py-4 font-semibold">Suggested For You</p>
+                <p class="dark:text-gray-200 text-gray-900 px-2 py-4 font-semibold border-t-2 border-gray-200 mt-5 dark:border-gray-700">Suggested For You</p>
                 {%for other_profile in other_profiles%}
-                    <div class="flex justify-between bg-gray-100 m-7 p-4 rounded-md">
+                    <div class="flex justify-between bg-gray-100 dark:bg-gray-800  m-7 p-4 rounded-md">
                         <a href="{% url 'core:profile' username=other_profile.user.username %}">
                             <div>
-                                <p class="pl-2 pb-2 font-semibold">@{{other_profile.user.username}}</p>
+                                <p class="text-black dark:text-gray-200 pl-2 pb-2 font-semibold">@{{other_profile.user.username}}</p>
                                 <img src="{{other_profile.profile_pics.url}}" class="profile_img w-24 h-24" alt="">
                             </div>
                         </a>

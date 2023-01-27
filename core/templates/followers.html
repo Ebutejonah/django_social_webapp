@@ -3,7 +3,7 @@
 {%block content%}
 <div class="bg-black">
     <div class="flex justify-center items-center max-w-6xl mx-auto bg-gray-900">
-        <div class="text-white text-2xl -mt-96 mb-96">
+        <div class="text-white text-2xl -mt-56 mb-96">
             {%include 'partials/navbar.html'%}
         </div>
         <div class="border-x-2 border-gray-600 w-full h-screen">
@@ -11,7 +11,7 @@
                 <a href="followers?username={{user_profile.user.username}}" class="text-blue-600 hover:bg-gray-800 px-10 py-2">Followers</a>
                 <a href="following?username={{user_profile.user.username}}" class="hover:bg-gray-800 px-10 py-2">Following</a>
             </div>
-            {%if profile%}
+            {%if profiles%}
                 {%for profile in profiles reversed%}
                 <div class="flex justify-between py-4 px-8 ">
                     <div>
@@ -36,9 +36,9 @@
                 </div>
                 {%endfor%}     
             {%else%}
-            <div class="mt-20 flex justify-center text-gray-200">
+            <div class="mt-20 flex justify-center text-gray-200 pr-16">
                 <div class="flex flex-col items-center">
-                    <a href="{%url 'core:search'%}"><i class="fa-solid fa-user-plus text-7xl p-10 border-2 border-gray-200 rounded-full w-40 h-40"></i></a>
+                    <i class="fa-solid fa-user-plus text-7xl p-10 border-2 border-gray-200 rounded-full w-40 h-40"></i>
                     <p class="font-semibold text-5xl py-10">Followers</p>
                     <p class="flex text-center text-lg">You'll see all the accounts who follow you here.</p>
                 </div>   
