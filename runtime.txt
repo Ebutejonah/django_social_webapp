@@ -1,0 +1,2 @@
+python3: manage.py load_location
+python-3.10.5
