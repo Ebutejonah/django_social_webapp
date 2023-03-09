@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','socialsbyjonah.social','www.socialsbyjonah.social','djangosocialwebapp-production-f41f.up.railway.app']
 
 
 # Application definition
@@ -165,4 +165,4 @@ NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000','https://socialsbyjonah.social','https://www.socialsbyjonah.social','https://djangosocialwebapp-production-f41f.up.railway.app']
