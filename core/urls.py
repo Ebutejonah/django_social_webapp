@@ -15,7 +15,7 @@ urlpatterns = [
     path('follow',followView,name='follow'),
     path('search', SearchView, name = 'search'),
     path('searched/<str:name>/', SearchedUserView, name = 'searched'),
-    path('comments/<str:post_id>/', CommentView, name = 'comments')
+    path('comments/<str:post_id>/', CommentView, name = 'comments'),
 ]
 
 htmx_urlpatterns = [

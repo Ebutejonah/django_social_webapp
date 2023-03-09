@@ -1,13 +1,15 @@
 {%extends 'base.html'%}
 {%load static%}
 {%block content%}
-<div class="bg-black h-full">
-    <div class="flex justify-center bg-gray-900 max-w-6xl mx-auto px-4">
-        <div class="text-white text-2xl">
+<div class="dark:bg-black h-full">
+    <div class="text-2xl text-gray-100 md:hidden flex justify-center mx-auto pb-4 sticky top-0 bg-white dark:bg-black z-10">
+        {%include 'partials/navbar2.html'%}
+    </div>
+    <div class="flex justify-center bg-white dark:bg-black max-w-6xl mx-auto overflow-y-hidden">
+        <div class="text-gray-100 text-2xl hidden md:block">
             {%include 'partials/navbar.html'%}
         </div>
-        <div class="border-l-2 border-gray-600 px-2 pt-6">
-        
+        <div class="border-l-2 border-gray-300 dark:border-gray-600 px-2 pt-10 w-full">
             <div class="flex justify-between pb-3">
                 <span>
                     <a href="/">
@@ -15,8 +17,8 @@
                     </a>
                 </span>
                 <span>
-                    <p class="font-semibold uppercase text-2xl text-white">{{user_profile.name_last}}&nbsp;&nbsp;{{user_profile.name_first}}</p>
-                    <p class="text-gray-300 text-center">@{{user_profile.user.username}}</p>   
+                    <p class="font-semibold uppercase text-2xl dark:text-white text-gray-900">{{user_profile.name_last}}&nbsp;&nbsp;{{user_profile.name_first}}</p>
+                    <p class="dark:text-gray-300 text-center text-gray-700">@{{user_profile.user.username}}</p>   
                 </span>
                 <span>
                     {%if user_profile.user.username == request.user.username%}
@@ -41,7 +43,7 @@
                     <img src="{{user_profile.background_profile_pics.url}}" class="rounded-lg object-cover w-full h-80" alt="Background Image">
                 </a>
                 <div class="text-black text-2xl ml-2 -mt-16 justify-between bg-white p-2 rounded-md absolute">
-                    <span class="pl-4 text-gray-500 hover:text-black">{{user_post_length}} 
+                    <span class="md:pl-4 text-gray-500 hover:text-black">{{user_post_length}} 
                         {%if user_post_length == 0 %}
                             Posts
                         {%elif user_post_length == 1%}
@@ -51,7 +53,7 @@
                         {%endif%}
                     </span>
                     <a href="followers?username={{user_profile.user.username}}">
-                        <span class="pl-4 text-gray-500 hover:text-black">{{followers}} 
+                        <span class="md:pl-4 text-gray-500 hover:text-black">{{followers}} 
                             {%if followers == 0 %}
                                 Followers
                             {%elif followers == 1%}
@@ -61,44 +63,45 @@
                             {%endif%}
                         </span>
                     </a>
-                    <a href="following?username={{user_profile.user.username}}"><span class="pl-4 pr-4 text-gray-500 hover:text-black">Following {{following}}</span></a>
+                    <a href="following?username={{user_profile.user.username}}"><span class="md:pl-4 md:pr-4 text-gray-500 hover:text-black">Following {{following}}</span></a>
                 </div>
             </div>
             <div class ="flex justify-end -mt-16">
                 <div>
                     <a href="{{user_profile.profile_pics.url}}">
-                        <img src="{{user_profile.profile_pics.url}}" class="profile_img mr-3 w-32 h-32 border-2 border-gray-600" alt="Profile Image">
+                        <img src="{{user_profile.profile_pics.url}}" class="profile_img mr-3 w-32 h-32 border-2 border-gray-300 dark:border-0" alt="Profile Image">
                     </a>
                 </div>   
             </div>  
-            <div class="border-y-2 border-gray-400 mb-5 mt-10">
-                <p class="font-semibold text-gray-300 flex justify-center mt-10 text-xl">BIO</p>
+            <div class="border-y-2 border-gray-300 dark:border-gray-600 mb-5 mt-10">
+                <p class="font-semibold dark:text-gray-300 text-gray-500 flex justify-center mt-10 text-xl">BIO</p>
                 <div class="text-white rounded-lg max-w-4xl break-all my-5 p-3 flex justify-center"> 
                     {{user_profile.bio}}
                 </div>
                 <span><i class="mt-8 fa-solid fa-location-dot mb-2 text-blue-600"></i></span>
-                <span class="text-white mb-2 w-20 font-semibold align-text-bottom mt-3 py-1 px-3 h-10">{{user_profile.continent}}, {{user_profile.country}}</span>
+                <span class="text-gray-800 mb-2 w-20 font-semibold align-text-bottom mt-3 py-1 px-3 h-10 dark:text-gray-300">{{user_profile.continent}}, {{user_profile.country}}
+                </span>
             </div> 
             {%if user_profile.user.username == request.user.username%} 
                 {%if post%}
-                    <p class="font-bold mt-10 flex justify-center text-gray-300">All Posts By You</p>   
+                    <p class="font-bold mt-10 flex justify-center text-gray-600 dark:text-gray-300">All Posts By You</p>   
                 {%else%}
-                    <p class="font-bold mt-20 flex justify-center text-gray-300 mb-40">All posts you share will appear on your profile.</p>
+                    <p class="font-bold mt-20 flex justify-center text-gray-600 mb-56 dark:text-gray-300">All posts you share will appear on your profile.</p>
                 {%endif%}
             {%else%}
                 {%if post%}
-                    <p class="font-bold mt-10 flex justify-center text-gray-300">All Posts By @{{user_profile.user.username}}</p>
+                    <p class="font-bold mt-10 flex justify-center text-gray-600 dark:text-gray-300">All Posts By @{{user_profile.user.username}}</p>
                 {%else%}
-                    <p class="font-bold mt-20 flex justify-center text-gray-300 mb-40">@{{user_profile.user.username}} has no post</p>
+                    <p class="font-bold mt-20 flex justify-center text-gray-600 mb-40 dark:text-gray-300">@{{user_profile.user.username}} has no post</p>
                 {%endif%}
             {%endif%}
             {%for post in post reversed%}
-                <div class="postdiv mb-10 mt-10 overflow-hidden bg-gray-100 rounded-md" id="">
+                <div class="postdiv mb-10 mt-10 overflow-hidden bg-gray-100 dark:bg-gray-900 rounded-md" id="">
                     <div class="flex justify-between mb-3">
-                        <p class="p-3 font-semibold cursor-pointer hover:underline">@{{user_profile.user.username}}</p>
+                        <p class="p-3 font-semibold cursor-pointer hover:underline dark:text-gray-200">@{{user_profile.user.username}}</p>
                         <div class="block mr-5">
                             <div class="flex justify-center">
-                                <i id="" class="postoption fa-solid fa-ellipsis p-2 mt-2 cursor-pointer hover: border-gray-200 hover:rounded-full hover:bg-gray-200 duration-500"></i>
+                                <i id="" class="postoption fa-solid fa-ellipsis p-2 mt-2 cursor-pointer hover: border-gray-200 hover:rounded-full hover:bg-gray-200 duration-500 dark:text-gray-200 dark:hover:bg-gray-700"></i>
                             </div>
                             <div id ="" class="deletepost opacity-0 cursor-pointer">
                                 <i class="fa-solid fa-trash pt-1 text-red-500"></i><span class="lowercase text-red-500 pl-2">Delete</span>
@@ -117,27 +120,66 @@
                         </a>
                     {%endif%}
                     <div class="p-4">
-                        <p>{{post.caption}}</p>
-                        <p>{{post.likes}} 
-                            {%if post.likes == 0%}
+                        <p class="dark:text-gray-200">{{post.caption}}</p>
+                        <p class="dark:text-gray-200">{{post.likes.count}} 
+                            {%if post.likes.count == 0%}
                                 likes
-                            {% elif post.likes == 1%}
+                            {% elif post.likes.count == 1%}
                                 like
                             {%else%}
                                 likes
                             {%endif%}
                         </p>
-                        <p>{{post.time_of_post}}</p>
+                        <p class="dark:text-gray-200">{{post.time_of_post}}</p>
                     </div>
                 </div>
-                <hr>
             {%endfor%}
-        </div>
-        
+        </div>  
     </div>
     {%include 'partials/footnote.html'%}
-    </div>
+</div>
+<script type="text/javascript">
+    //toggle functionality for light/dark modes
+    const sunIcon = document.getElementById('sun')
+    const moonIcon = document.getElementById('moon')
     
-
-
+    const userTheme = localStorage.getItem('theme')
+    const systemTheme = window.matchMedia('(prefered-color-scheme: dark)').matches
+    
+    const iconToggle = ()=>{
+        sunIcon.classList.toggle('hidden')
+        moonIcon.classList.toggle('hidden')
+    }
+    
+    const themeCheck = ()=>{
+        if(userTheme === 'dark' || (!userTheme && systemTheme)){
+            document.documentElement.classList.add('dark')
+            moonIcon.classList.add('hidden')
+            return;
+        }
+        sunIcon.classList.add('hidden')
+    }
+    
+    const themeSwitch = ()=> {
+        if (document.documentElement.classList.contains('dark')){
+            document.documentElement.classList.remove('dark')
+            localStorage.setItem('theme', 'Light')
+            iconToggle()
+            return;
+        }
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark')
+        iconToggle()
+    }
+    
+    sunIcon.addEventListener('click', ()=>{
+        themeSwitch()
+    })
+    
+    moonIcon.addEventListener('click', ()=>{
+        themeSwitch()
+    })
+    
+    themeCheck()
+</script>
 {%endblock%}

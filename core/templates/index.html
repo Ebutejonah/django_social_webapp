@@ -1,30 +1,128 @@
 {%extends 'base.html'%}
 {%load static%}
 {%block content%}
-<div class="bg-black">
-    <div class="post_id flex justify-center mx-auto bg-gray-100 dark:bg-gray-900 max-w-6xl">
-        <div class="text-2xl">
+<div class="bg-white dark:bg-black">
+    <div class="text-2xl text-gray-100 md:hidden flex justify-center mx-auto pb-4 sticky top-0 bg-white dark:bg-black z-10">
+        {%include 'partials/navbar2.html'%}
+    </div>
+    <div class="post_id flex justify-center mx-auto bg-white dark:bg-black max-w-6xl">
+        <div class="text-2xl text-gray-100 hidden md:block">
             {%include 'partials/navbar.html'%}
         </div>
-        <div class = "container max-w-xl border-x-2 px-2 rounded-md border-gray-200 dark:border-gray-700"> 
+        {%if posts%}
+        <div class = "container max-w-xl border-x-2 px-2 rounded-md border-gray-200 dark:border-gray-600">
+        {%else%}
+        <div class = "container max-w-xl border-x-2 px-2 rounded-md border-gray-200 dark:border-gray-600 h-screen">
+        {%endif%}
             <a href="{% url 'core:profile' username=user_object.username %}">
                 <p class="text-blue-600 text-4xl font-bold p-4 cursor-pointer">@{{user_profile.user.username}}</p>
                 <img src="{{user_profile.profile_pics.url}}" class="w-32 h-32 items-center mx-auto profile_img"alt="Image">
             </a>
+            <div class="mr-0 rounded-md px-2 lg:hidden pt-6">
+                <form action="" id="post_button" method="POST" enctype="multipart/form-data" class="post_form">{%csrf_token%}
+                    <textarea id="caption" type="text" autocomplete="off" class="resize-none mt-2 w-full h-36 border-2 pl-2 rounded-md" name="caption" placeholder="What's on your mind?"></textarea>
+                    <input id="postimage" type="file" class="cursor-pointer text-black bg-gray-100 rounded-md font-normal" name="postimage">
+                    <div class="flex justify-between mt-5">
+                        <p id="cancelbutton" class="text-black border-2 border-gray-500 rounded-full px-2 bg-gray-100 cursor-pointer hover:bg-red-400 duration-300 hover:text-white">Cancel</p>
+                        <input disabled id="post" type="submit" class="rounded-full border-2 cursor-pointer border-gray-500 px-2 text-black bg-gray-100" value="Post">   
+                    </div>
+                </form>    
+            </div>
             {%if posts%}
-                <div id="post_id">
-                    {%include 'partials/post.html'%}
+                <div id="post_id" class="mt-10">
+                    {%for post in posts reversed%}
+                    <div class="border-t-2 border-gray-300 dark:border-gray-600">
+                        <div class="postdiv mb-10 mt-10 overflow-hidden bg-gray-100 dark:bg-gray-900 rounded-md">
+                            <div class="flex justify-between mb-3">
+                                <a href="{% url 'core:profile' username=post.user %}">
+                                    <p class="p-3 font-semibold cursor-pointer text-black hover:underline dark:text-gray-200">@{{post.user}}</p>
+                                </a>
+                                <div class="block mr-5">
+                                    <div class="flex justify-center">
+                                        <i id="ellipsis" class="postoption fa-solid fa-ellipsis p-2 mt-2 cursor-pointer hover: border-gray-200 hover:rounded-full hover:bg-gray-200 duration-500 dark:text-gray-200 dark:hover:bg-gray-700"></i>
+                                    </div>
+                                </div>   
+                            </div>
+                            <div id ="follow-delete" class="deletepost opacity-0 cursor-pointer flex justify-end mr-5 -mt-5 mb-3">
+                                {%if post.user == user_profile.user.username%}
+                                    <div>
+                                        <!--<form action="" method="POST">{%csrf_token%}-->
+                                            <a href="/delete-post?post_id={{post.id}}">
+                                                <span class="lowercase text-red-500 pr-2">
+                                                    Delete
+                                                </span>   
+                                                <i class="fa-solid fa-trash pt-1 text-red-500"></i>
+                                            </a>    
+                                        <!--</form>--> 
+                                    </div>     
+                                {%else%}
+                                    <a href="/follow?username={{post.user}}">
+                                        <span class=" text-red-500 font-semibold hover:underline">Unfollow</span><i class="fa-solid fa-user-minus pt-1 text-red-500 pl-2"></i>
+                                    </a>
+                                {%endif%}
+                            </div>
+                            <div class="form_data">
+                                {%if post.post_file%}
+                                    <a href="{{post.post_file.url}}">
+                                        {%if '.mp4' in post.post_file.url%}
+                                            <video controls src="{{post.post_file.url}}" class="cursor-pointer"></video>
+                                        {%else%}
+                                            <div class="flex justify-center">
+                                                <img src="{{post.post_file.url}}" class="cursor-pointer" alt="Post Image">
+                                            </div>
+                                        {%endif%}
+                                    </a>
+                                    <div class="flex justify-between">
+                                        <p class="px-4 pt-2 dark:text-gray-200">{{post.caption}}</p>
+                                        <a href="{{post.post_file.url}}" download><i class="text-2xl fa-solid fa-download m-4 dark:text-gray-200"></i></a>   
+                                    </div>
+                                {%else%}
+                                    <p class="px-4 dark:text-gray-200">{{post.caption}}</p> 
+                                {%endif%}
+                            </div>
+                            <div class="p-4">
+                                <div class="flex">
+                                    <div class="cursor-pointer">
+                                        <form action="" class="like" id="like" method="POST"> {%csrf_token%}
+                                            <a href="/like-post?post_id={{post.id}}" name="post_id" id="post_id">
+                                                 
+                                            <i id="like_button" class="text-2xl like_button fa-regular fa-heart cursor-pointer dark:text-gray-300" name="post_id" id="post_id"></i>                                                                                               
+                                              
+                                            </a>
+                                        </form>        
+                                    </div>
+                                    <a href="{%url 'core:comments' post_id=post.id %}">
+                                        <i class="text-2xl fa-regular fa-comment pl-4 dark:text-gray-300"></i>
+                                    </a>    
+                                </div>
+                                <p class="dark:text-gray-400">{{post.likes.count}} 
+                                    {%if post.likes.count == 0%}
+                                        likes
+                                    {% elif post.likes.count == 1%}
+                                        like
+                                    {%else%}
+                                        likes
+                                    {%endif%}
+                                </p>
+                                <a href="{%url 'core:comments' post_id=post.id %}"><p class="dark:text-gray-400 text-gray-500">View all {{post.no_of_comments}} comments</p></a>
+                                <p class="dark:text-gray-300">{{post.time_of_post}}</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    {%endfor%}
                 </div>
             {%else%}
-                <p class="dark:text-gray-300 text-black text-2xl text-center font-semibold mt-32 px-2 pb-4">Welcome to <span class="text-blue-600 italic">Social Book</span> &nbsp;<i class="fa-solid fa-users text-blue-600 p-4 bg-gray-100 rounded-full"></i></p>
-                <p class="dark:text-gray-400 text-black text-center font-semibold text-xl px-2">Posts you upload and those of accounts you follow will be displayed here.</p>
+                <p class="dark:text-gray-100 text-black text-2xl text-center font-semibold mt-32 px-2 pb-4">Welcome to <span class="text-blue-600 italic">Social Book</span> &nbsp;<i class="fa-solid fa-users text-blue-600 p-4 bg-gray-300 rounded-full"></i></p>
+                <p class="dark:text-gray-300 text-black text-center font-semibold text-xl px-2">Posts you upload and those of accounts you follow will be displayed here.</p>
             {%endif%}    
         </div>
-        <div>
-            <div class="mr-8 rounded-md px-2">
-                <form action="" id="post_button" method="POST" enctype="multipart/form-data">{%csrf_token%}
-                    <textarea id="caption" type="text" autocomplete="off" class="resize-none mt-2 w-96 h-36 border-2 pl-2 rounded-md" name="caption" placeholder="What's on your mind?"></textarea>
-                    <input id="postimage" type="file" autocomplete="off" class="cursor-pointer text-black bg-gray-100 rounded-md font-normal" name="postimage">
+        <div class="hidden lg:block">
+            <div class="mr-0 rounded-md px-2">
+                <form action="" id="post_button" method="POST" enctype="multipart/form-data" class="post_form">{%csrf_token%}
+                    <textarea id="caption" type="text" autocomplete="off" class="resize-none mt-2 w-full md:w-72 lg:w-96 h-36 border-2 pl-2 rounded-md" name="caption" placeholder="What's on your mind?"></textarea>
+                    <input id="postimage" type="file" class="cursor-pointer text-black bg-gray-100 rounded-md font-normal" name="postimage">
                     <div class="flex justify-between mt-5">
                         <p id="cancelbutton" class="text-black border-2 border-gray-500 rounded-full px-2 bg-gray-100 cursor-pointer hover:bg-red-400 duration-300 hover:text-white">Cancel</p>
                         <input disabled id="post" type="submit" class="rounded-full border-2 cursor-pointer border-gray-500 px-2 text-black bg-gray-100" value="Post">   
@@ -34,11 +132,11 @@
             <div>
                 <p class="dark:text-gray-200 text-gray-900 px-2 py-4 font-semibold border-t-2 border-gray-200 mt-5 dark:border-gray-700">Suggested For You</p>
                 {%for other_profile in other_profiles%}
-                    <div class="flex justify-between bg-gray-100 dark:bg-gray-800  m-7 p-4 rounded-md">
+                    <div class="flex justify-between bg-gray-100 dark:bg-gray-900  m-7 p-4 rounded-md">
                         <a href="{% url 'core:profile' username=other_profile.user.username %}">
                             <div>
                                 <p class="text-black dark:text-gray-200 pl-2 pb-2 font-semibold">@{{other_profile.user.username}}</p>
-                                <img src="{{other_profile.profile_pics.url}}" class="profile_img w-24 h-24" alt="">
+                                <img src="{{other_profile.profile_pics.url}}" class="profile_img w-24 h-24 border-2 border-gray-300 dark:border-0" alt="">
                             </div>
                         </a>
                         <span>
@@ -57,42 +155,6 @@
     </div>
     
 </div>
-
 {%include 'partials/footnote.html'%}
 {%endblock%}
 
-<!--PREVENT RELOAD ON SUBMITTING FORM
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Todo List</title>
-</head>
-<body>
-    <form method="post"id="task-form">
-        {% csrf_token %}
-        <input type="text"placeholder="Enter Task"name="task"id="task"required>
-        <button type="submit">Save</button>
-    </form>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"
-        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-        crossorigin="anonymous">
-    </script>
-    <script type="text/javascript">
-    $(document).on('submit', '#task-form',function(e){
-        e.preventDefault();
-        $.ajax({
-            type:'POST',
-            url:'{% url "home"%}',
-            data:
-            {
-                task:$("#task").val(),
-                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
-            },
-            success:function(){
-                  alert('Saved');
-                    }
-            })
-        });
-    </script>  
-</body>
-</html>-->
