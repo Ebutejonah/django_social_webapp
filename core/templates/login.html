@@ -2,11 +2,11 @@
 {%load static%}
 
 {%block content%}
-<div class="dark:bg-black bg-white flex flex-col justify-center items-center">
+<div class="dark:bg-black bg-white flex flex-col h-screen justify-center items-center overflow-hidden">
     <p id="sun" class="text-2xl p-4 cursor-pointer rounded-full dark:text-white"><i class="fa-solid fa-sun"></i></p>
     <p id="moon" class="text-2xl p-4 rounded-full cursor-pointer"><i class="fa-solid fa-moon"></i></p>
     <p class="dark:text-white text-gray-600 text-2xl text-center font-semibold px-2 py-10">Welcome to <span class="text-blue-600 italic">Social Book</span> &nbsp;<i class="fa-solid fa-users text-blue-600 p-4 dark:bg-white bg-gray-200 rounded-full"></i>
-    <div class="border-2 border-blue-200 rounded-lg p-12 mb-32 md:p-20">
+    <div class="border-2 border-blue-200 rounded-lg p-12 mb-20">
         <p class="text-blue-500 font-bold text-2xl text-center mb-4">LOGIN</p>
         {%for message in messages%}
             <span class="text-red-400">{{message}}</span>

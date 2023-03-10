@@ -2,7 +2,7 @@
 {%load static%}
 
 {%block content%}
-<div class="dark:bg-black">
+<div class="dark:bg-black overflow-hidden">
     <div class="text-gray-100 md:hidden flex justify-center mx-auto pb-4 sticky top-0 bg-white dark:bg-black z-10">
         {%include 'partials/navbar2.html'%}
     </div>
@@ -11,12 +11,9 @@
             {%include 'partials/navbar.html'%}
         </div>
         <div class=" py-10 border-l-2 border-gray-300 dark:border-gray-600 px-2 w-full">
-            <div class="flex justify-between pb-3">
+            <div class="flex justify-center pb-3">
                 <span>
-                    <a href="/" class="text-white flex p-2 items-center px-2 border-2 rounded-full bg-blue-600 hover:bg-blue-500 duration-500">Home</a>
-                </span>
-                <span>
-                    <p class="font-semibold uppercase text-2xl text-gray-700 dark:text-white">{{user_profile.name_last}}&nbsp;&nbsp;{{user_profile.name_first}}</p>
+                    <p class="font-semibold uppercase text-xl text-gray-700 dark:text-white">{{user_profile.name_last}}&nbsp;&nbsp;{{user_profile.name_first}}</p>
                     <p class="text-gray-500 dark:text-gray-300 text-center">@{{user_profile.user.username}}</p>
                 </span>       
             </div>
@@ -25,16 +22,22 @@
                     <a href="{{user_profile.background_profile_pics.url}}">
                         <img src="{{user_profile.background_profile_pics.url}}" class="rounded-lg object-cover w-full" alt="Background Image">
                     </a>    
-                    <input type="file" class="pt-2 text-gray-600 dark:text-white" name="bg_pics">
+                    
                 </div>
-                <div class ="prof flex justify-end -mt-20">
-                    <div>
-                        <a href="{{user_profile.profile_pics.url}}">
-                            <img src="{{user_profile.profile_pics.url}}" class="profile_img w-20 h-20 border-2 border-gray-300" alt="Profile Image">
-                        </a>
-                        <input type="file" class="pt-2 text-gray-600 dark:text-white" name="profile_pic">
-                    </div>   
-                </div> 
+                <div class="flex mx-auto container">
+                    <div class ="prof flex -mt-20 items-baseline">
+                        <div class="">
+                            <a href="{{user_profile.profile_pics.url}}">
+                                <img src="{{user_profile.profile_pics.url}}" class="profile_img w-20 h-20 border-2 border-gray-300" alt="Profile Image">
+                            </a>
+                            <input type="file" class="pt-2 text-gray-600 dark:text-white" name="profile_pic">
+                        </div>     
+                    </div> 
+                    <div class="-mt-16 mx-auto">
+                        <input type="file" class="pt-2 text-gray-600 text-sm dark:text-white" name="bg_pics">
+                    </div> 
+                </div>
+          
                 <p class="font-semibold text-gray-500 dark:text-gray-300 flex justify-center mt-10 text-xl">BIO</p> 
                 <textarea id='bio' class="w-full h-44 border-2 resize-none mt-5 px-3" type="text" placeholder="Bio" name="bio">{{user_profile.bio}}</textarea>
                 <select required name="continent" class="border-2 mt-5 px-3" hx-get="{% url 'core:countries' %}" hx-trigger="change" hx-target="#countries">

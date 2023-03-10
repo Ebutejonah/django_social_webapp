@@ -2,7 +2,7 @@
 {%load static%}
 {%block content%}
 <div class="dark:bg-black h-full">
-    <div class="text-2xl text-gray-100 md:hidden flex justify-center mx-auto pb-4 sticky top-0 bg-white dark:bg-black z-10">
+    <div class="text-gray-100 md:hidden flex justify-center mx-auto pb-4 sticky top-0 bg-white dark:bg-black z-10">
         {%include 'partials/navbar2.html'%}
     </div>
     <div class="flex justify-center bg-white dark:bg-black max-w-6xl mx-auto overflow-y-hidden">
@@ -12,17 +12,12 @@
         <div class="border-l-2 border-gray-300 dark:border-gray-600 px-2 pt-10 w-full">
             <div class="flex justify-between pb-3">
                 <span>
-                    <a href="/">
-                        <p class="text-white p-2 border-2 border-gray-300 rounded-full text-center bg-blue-600 hover:border-white duration-500 hover:bg-blue-600">Home</p>
-                    </a>
-                </span>
-                <span>
-                    <p class="font-semibold uppercase text-2xl dark:text-white text-gray-900">{{user_profile.name_last}}&nbsp;&nbsp;{{user_profile.name_first}}</p>
+                    <p class="font-semibold uppercase text-xl dark:text-white text-gray-900">{{user_profile.name_last}}&nbsp;&nbsp;{{user_profile.name_first}}</p>
                     <p class="dark:text-gray-300 text-center text-gray-700">@{{user_profile.user.username}}</p>   
                 </span>
                 <span>
                     {%if user_profile.user.username == request.user.username%}
-                        <a href="{%url 'core:settings'%}" class="text-white flex p-2 items-center px-2 border-2 rounded-full bg-blue-600 hover:bg-blue-600 duration-500">Edit Profile</a>
+                        <a href="{%url 'core:settings'%}" class="text-white items-center px-2 border-2 py-1 rounded-full bg-blue-600 hover:bg-blue-600 duration-500">Edit Profile</a>
                     {%else%}
                         <a href="/follow?username={{user_profile.user.username}}">
                             {%if is_following%}
@@ -40,9 +35,9 @@
             </div>
             <div>
                 <a href="{{user_profile.background_profile_pics.url}}">
-                    <img src="{{user_profile.background_profile_pics.url}}" class="rounded-lg object-cover w-full h-80" alt="Background Image">
+                    <img src="{{user_profile.background_profile_pics.url}}" class="rounded-lg object-cover w-full" alt="Background Image">
                 </a>
-                <div class="text-black text-2xl ml-2 -mt-16 justify-between bg-white p-2 rounded-md absolute">
+                <div class="text-black font-semibold text-sm -mt-12 justify-between bg-white p-2 rounded-md absolute">
                     <span class="md:pl-4 text-gray-500 hover:text-black">{{user_post_length}} 
                         {%if user_post_length == 0 %}
                             Posts
@@ -69,7 +64,7 @@
             <div class ="flex justify-end -mt-16">
                 <div>
                     <a href="{{user_profile.profile_pics.url}}">
-                        <img src="{{user_profile.profile_pics.url}}" class="profile_img mr-3 w-32 h-32 border-2 border-gray-300 dark:border-0" alt="Profile Image">
+                        <img src="{{user_profile.profile_pics.url}}" class="profile_img mr-3 w-20 h-20 border-2 border-gray-300 dark:border-0" alt="Profile Image">
                     </a>
                 </div>   
             </div>  
