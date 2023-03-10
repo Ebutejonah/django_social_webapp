@@ -893,6 +893,10 @@ select {
   margin-top: 2rem;
 }
 
+.mb-28 {
+  margin-bottom: 7rem;
+}
+
 .block {
   display: block;
 }
