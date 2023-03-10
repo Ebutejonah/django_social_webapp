@@ -3,7 +3,7 @@
 
 {%block content%}
 <div class="dark:bg-black">
-    <div class="text-2xl text-gray-100 md:hidden flex justify-center mx-auto pb-4 sticky top-0 bg-white dark:bg-black z-10">
+    <div class="text-gray-100 md:hidden flex justify-center mx-auto pb-4 sticky top-0 bg-white dark:bg-black z-10">
         {%include 'partials/navbar2.html'%}
     </div>
     <div class="bg-white dark:bg-black max-w-6xl mx-auto flex justify-center container">
@@ -23,14 +23,14 @@
             <form action="" method="POST" id="form_data" enctype="multipart/form-data">{%csrf_token%} 
                 <div>
                     <a href="{{user_profile.background_profile_pics.url}}">
-                        <img src="{{user_profile.background_profile_pics.url}}" class="rounded-lg object-cover w-full h-80" alt="Background Image">
+                        <img src="{{user_profile.background_profile_pics.url}}" class="rounded-lg object-cover w-full" alt="Background Image">
                     </a>    
                     <input type="file" class="pt-2 text-gray-600 dark:text-white" name="bg_pics">
                 </div>
-                <div class ="flex justify-end -mt-20">
+                <div class ="prof flex justify-end -mt-20">
                     <div>
                         <a href="{{user_profile.profile_pics.url}}">
-                            <img src="{{user_profile.profile_pics.url}}" class="profile_img w-32 h-32 border-2 border-gray-300" alt="Profile Image">
+                            <img src="{{user_profile.profile_pics.url}}" class="profile_img w-20 h-20 border-2 border-gray-300" alt="Profile Image">
                         </a>
                         <input type="file" class="pt-2 text-gray-600 dark:text-white" name="profile_pic">
                     </div>   
@@ -53,8 +53,9 @@
             </form> 
         </div>       
     </div>
+    {%include 'partials/footnote.html'%}
 </div>
-{%include 'partials/footnote.html'%}
+
 <script type="text/javascript">
     const formdiv = document.getElementById('form_data')
     const cancel = document.getElementById('cancel')
