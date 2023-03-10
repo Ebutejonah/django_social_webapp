@@ -7,7 +7,7 @@
 
 module.exports = {
     content: [
-        '../../core/templates/*.html','../../core/templates/partials/*.html','!../../**/node_modules','../../core/static/main.js',
+        '../../core/templates/*.html','../../core/templates/partials/*.html','../../core/static/main.js',
        
     ],
     theme: {

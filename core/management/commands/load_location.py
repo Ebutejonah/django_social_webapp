@@ -255,3 +255,5 @@ class Command(BaseCommand):
         ]
         for south_american_country in south_american_countries:
             Country.objects.create(continent=south_america,country=south_american_country)
+
+        return
