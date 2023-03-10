@@ -1,7 +1,7 @@
 {%extends 'base.html'%}
 {%load static%}
 {%block content%}
-<div class="dark:bg-black">
+<div class="dark:bg-black overflow-hidden">
     <div class="text-gray-100 md:hidden flex justify-center mx-auto pb-4 sticky top-0 bg-white dark:bg-black z-10">
         {%include 'partials/navbar2.html'%}
     </div>
@@ -16,7 +16,7 @@
             </div>
             {%if profiles%}
                 {%for profile in profiles reversed%}
-                <div class="flex justify-between py-4 px-8 ">
+                <div class="flex justify-between py-4 px-2">
                     <div>
                         <a href="{%url 'core:profile' username=profile.user.username%}" class="flex space-x-3">
                             <img class="rounded-full w-14 h-14" src="{{profile.profile_pics.url}}" alt="profile_image">
