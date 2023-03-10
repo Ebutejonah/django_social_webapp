@@ -4,9 +4,8 @@
 <div class="flex items-center text-gray-900 dark:text-gray-100">
     <a href="/" class="text-blue-600 p-3 bg-gray-200 rounded-full"><i class="fa-solid fa-users"></i></a>
     <a href="{% url 'core:profile' username=user_object.username %}" class="p-3 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full"><i class="fa-solid fa-user"></i></a>
-    <a href="{%url 'core:search'%}" class="p-3 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full"><i class="fa-solid fa-magnifying-glass"></i></a>
     <a href="/" class="hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full"><i class="fa-solid fa-house p-3"></i></a>
-    <a href="{%url 'core:settings'%}" class="p-3 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full"><i class="fa-solid fa-gear"></i></a>
+    <a href="{%url 'core:search'%}" class="p-3 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full"><i class="fa-solid fa-magnifying-glass"></i></a>
     <p id="sun" class="p-3 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full"><i class="fa-solid fa-sun"></i></p>
     <p id="moon" class="p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800"><i class="fa-solid fa-moon"></i></p>
     <a href="{%url 'core:logout'%}" class="text-lg font-semibold text-white flex justify-end my-4 border-2 rounded-full p-2 border-gray-400 bg-red-500 hover:bg-red-600 duration-500">Logout</a>

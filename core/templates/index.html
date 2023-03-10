@@ -10,9 +10,9 @@
             {%include 'partials/navbar.html'%}
         </div>
         {%if posts%}
-        <div class = "container max-w-xl border-x-2 px-2 rounded-md border-gray-200 dark:border-gray-600 pb-20 sm:pb-0">
+        <div class = "container max-w-xl border-x-2 px-2 border-gray-200 dark:border-gray-600 pb-20 sm:pb-0">
         {%else%}
-        <div class = "container max-w-xl border-x-2 px-2 rounded-md border-gray-200 dark:border-gray-600 h-screen pb-20 sm:pb-0 overflow-hidden">
+        <div class = "container max-w-xl border-x-2 px-2 border-gray-200 dark:border-gray-600 h-screen pb-20 sm:pb-0">
         {%endif%}
             <a href="{% url 'core:profile' username=user_object.username %}">
                 <p class="text-blue-600 text-4xl font-bold p-4 cursor-pointer">@{{user_profile.user.username}}</p>
