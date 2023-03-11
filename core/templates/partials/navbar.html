@@ -5,7 +5,7 @@
     <a href="/" class="text-blue-600 p-4 bg-gray-200 rounded-full"><i class="fa-solid fa-users"></i></a>
     <a href="/" class="hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full"><i class="fa-solid fa-house p-4"></i></a>
     <a href="{%url 'core:search'%}" class="p-4 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full"><i class="fa-solid fa-magnifying-glass"></i></a>
-    <a href="{% url 'core:profile' username=user_object.username %}" class="p-4 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full"><i class="fa-solid fa-user"></i></a>
+    <a href="{% url 'core:profile' username=request.user.username %}" class="p-4 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full"><i class="fa-solid fa-user"></i></a>
     <a href="{%url 'core:settings'%}" class="p-4 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full"><i class="fa-solid fa-gear"></i></a>
     <p id="sun" class="p-4 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full"><i class="fa-solid fa-sun"></i></p>
     <p id="moon" class="p-4 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800"><i class="fa-solid fa-moon"></i></p>
