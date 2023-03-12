@@ -14,3 +14,7 @@
 .prof{
     place-self: end;
 }
+
+.display-none{
+    @apply hidden;
+}

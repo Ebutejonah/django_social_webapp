@@ -3,7 +3,7 @@
 {%block content%}
 <div class="dark:bg-black">
     <div class="bg-white dark:bg-black">
-        <div class="text-gray-100 md:hidden flex justify-center mx-auto pb-4 sticky top-0 bg-white dark:bg-black z-10">
+        <div class="text-gray-100 flex justify-center mx-auto pb-4 sticky top-0 bg-white dark:bg-black z-10">
             {%include 'partials/navbar2.html'%}
         </div>
         {%if all_comments%}
@@ -11,9 +11,6 @@
         {%else%}
         <div class="bg-white dark:bg-black flex justify-center mx-auto max-w-6xl h-screen">
         {%endif%}
-            <div class="text-2xl text-gray-100 hidden md:block">
-                {%include 'partials/navbar.html'%}
-            </div>
             <div class="pt-7 border-l-2 border-gray-200 dark:border-gray-600 w-full">
                 <div class="mb-60 justify-center space-x-4 mx-8">
                     <img src="{{post.profile.profile_pics.url}}" alt="" class="w-32 h-32 rounded-full">
@@ -58,24 +55,24 @@
     {%include 'partials/footnote.html'%} 
 </div>
 <script type="text/javascript">
-    //event listener to enable and disable the post button
-    const comment = document.getElementById('comment')
-    const searchbutton = document.getElementById('submit_button')
+//event listener to enable and disable the post button
+const comment = document.getElementById('comment')
+const searchbutton = document.getElementById('submit_button')
 
-    comment.addEventListener('keyup', (e)=>{
-        const value = e.currentTarget.value;
-        if(value==""){
-            submit_button.classList.replace("bg-blue-600", 'bg-gray-300')
-            submit_button.classList.replace("text-white", 'text-black')
-            submit_button.disabled = true
-        }
-        else{
-            submit_button.classList.replace('bg-gray-300', "bg-blue-600")
-            submit_button.classList.replace('text-black', "text-white")
-            submit_button.disabled = false
-            
-        }
-    })
+comment.addEventListener('keyup', (e)=>{
+    const value = e.currentTarget.value;
+    if(value==""){
+        submit_button.classList.replace("bg-blue-600", 'bg-gray-300')
+        submit_button.classList.replace("text-white", 'text-black')
+        submit_button.disabled = true
+    }
+    else{
+        submit_button.classList.replace('bg-gray-300', "bg-blue-600")
+        submit_button.classList.replace('text-black', "text-white")
+        submit_button.disabled = false
+        
+    }
+})
 
 //toggle functionality for light/dark modes
 const sunIcon = document.getElementById('sun')

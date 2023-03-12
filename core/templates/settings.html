@@ -3,13 +3,10 @@
 
 {%block content%}
 <div class="dark:bg-black overflow-hidden">
-    <div class="text-gray-100 md:hidden flex justify-center mx-auto pb-4 sticky top-0 bg-white dark:bg-black z-10">
+    <div class="text-gray-100 flex justify-center mx-auto pb-4 sticky top-0 bg-white dark:bg-black z-10">
         {%include 'partials/navbar2.html'%}
     </div>
     <div class="bg-white dark:bg-black max-w-6xl mx-auto flex justify-center container">
-        <div class="text-gray-100 text-2xl hidden md:block">
-            {%include 'partials/navbar.html'%}
-        </div>
         <div class=" py-10 border-l-2 border-gray-300 dark:border-gray-600 px-2 w-full">
             <div class="flex justify-center pb-3">
                 <span>
@@ -60,14 +57,14 @@
 </div>
 
 <script type="text/javascript">
-    const formdiv = document.getElementById('form_data')
-    const cancel = document.getElementById('cancel')
+const formdiv = document.getElementById('form_data')
+const cancel = document.getElementById('cancel')
 
-    cancel.addEventListener('click', ()=>{
-        formdiv.reset()
-    })
+cancel.addEventListener('click', ()=>{
+    formdiv.reset()
+})
 
-    //toggle functionality for light/dark modes
+//toggle functionality for light/dark modes
 const sunIcon = document.getElementById('sun')
 const moonIcon = document.getElementById('moon')
 
