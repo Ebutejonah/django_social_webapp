@@ -102,7 +102,7 @@ def signUpView(request):
                 user=User.objects.create_user(username=usersname,email=email,password=password,first_name=first_name,last_name=last_name)
                 user.save()
 
-                #creating a profile object with only 2 fields once a user successfully signs in
+                #creating a profile object once a user successfully signs in
                 user_model=User.objects.get(username=usersname)
                 profile_obj=Profile.objects.create(user=user_model,id_user=user_model.id,name_first=user_model.first_name,name_last=user_model.last_name)
                 profile_obj.save()
