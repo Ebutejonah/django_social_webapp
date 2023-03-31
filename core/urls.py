@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import likeView,CommentView, FollowersView, FollowingView, SearchedUserView, deletePost, indexView, followView, logoutView, signUpView, loginView,account_settings,ProfileView, CountriesView, SearchView
+from .views import likeView,CommentView, FollowersView, FollowingView, SearchedUserView, deletePost, indexView, followView, logoutView, signUpView, loginView,account_settings,ProfileView, SearchView
 
 app_name = 'core'
 
@@ -17,7 +17,6 @@ urlpatterns = [
     path('search', SearchView, name = 'search'),
     path('searched/<str:name>/', SearchedUserView, name = 'searched'),
     path('comments/<str:post_id>/', CommentView, name = 'comments'),
-    path('countries', CountriesView, name ='countries'),
     path('delete-post',deletePost,name='delete-post'),
     path('json',indexView,name='json'),
 ]

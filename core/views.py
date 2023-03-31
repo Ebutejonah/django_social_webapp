@@ -351,14 +351,14 @@ def likeView(request):
             new_like = LikePost.objects.create(post_id=id,liked_by=username,post_reference=post)
             new_like.save()
             post.likes.add(new_like)
-            post.num_of_likes + 1
+            post.num_of_likes += 1
             post.save()
             checker = 1
         else:
             liked_post.delete()
             post.likes.remove(liked_post)
             checker = 0
-            post.num_of_likes - 1
+            post.num_of_likes -= 1
             post.save()
         liked = LikePost.objects.filter(post_id=id)
         likes = liked.count()
@@ -540,10 +540,3 @@ def followView(request):
         followers = len(user_followers)
         context = {'checker':checker,'num_of_followers':followers}
         return JsonResponse(context,safe=False)
-
-@login_required()
-def CountriesView(request):
-    continent = request.GET.get('continent')
-    countries = Country.objects.filter(continent = continent)
-    context = {'countries':countries}
-    return render(request, 'partials/countries.html',context)
