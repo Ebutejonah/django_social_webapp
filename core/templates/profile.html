@@ -16,17 +16,28 @@
                     {%if user_profile.user.username == request.user.username%}
                         <a href="{%url 'core:settings'%}" class="text-white items-center px-2 border-2 py-1 rounded-full bg-blue-600 hover:bg-blue-600 duration-500">Edit Profile</a>
                     {%else%}
-                        <a href="/follow?username={{user_profile.user.username}}">
+                        <!--<a href="/follow?username={{user_profile.user.username}}">
                             {%if is_following%}
-                                <p class="text-white flex p-2 items-center px-2 border-2 rounded-full bg-red-400 hover:bg-red-500 duration-500">
+                                <p class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-red-400 hover:bg-red-500 duration-500">
                                     Unfollow
                                 </p>
                             {%else%}
-                                <p class="text-white flex p-2 items-center px-2 border-2 rounded-full bg-blue-500 hover:bg-blue-600 duration-500">
+                                <p class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-blue-500 hover:bg-blue-600 duration-500">
                                     Follow
                                 </p>
                             {%endif%}
-                            </a>
+                        </a>-->
+                        <button class="follow_button" id="follow_button">
+                            {%if is_following%}
+                                <p id="follow" class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-red-400 hover:bg-red-500 duration-500">
+                                    Unfollow
+                                </p>
+                            {%else%}
+                                <p id="unfollow" class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-blue-500 hover:bg-blue-600 duration-500">
+                                    Follow
+                                </p>
+                            {%endif%}
+                        </button>
                     {%endif%}
                 </span>    
             </div>
@@ -45,7 +56,7 @@
                         {%endif%}
                     </span>
                     <a href="followers?username={{user_profile.user.username}}">
-                        <span class="md:pl-4 text-gray-500 hover:text-black">{{followers}} 
+                        <span id="num_of_followers" class="md:pl-4 text-gray-500 hover:text-black">{{followers}} 
                             {%if followers == 0 %}
                                 Followers
                             {%elif followers == 1%}
@@ -67,11 +78,11 @@
             </div>  
             <div class="border-y-2 border-gray-300 dark:border-gray-600 mb-5 mt-10">
                 <p class="font-semibold dark:text-gray-300 text-gray-500 flex justify-center mt-10 text-xl">BIO</p>
-                <div class="text-white rounded-lg max-w-4xl break-all my-5 p-3 flex justify-center"> 
+                <p class="text-black dark:text-white rounded-lg  break-all my-5 p-3 text-center"> 
                     {{user_profile.bio}}
-                </div>
+                </p>
                 <span><i class="mt-8 fa-solid fa-location-dot mb-2 text-blue-600"></i></span>
-                <span class="text-gray-800 mb-2 w-20 font-semibold align-text-bottom mt-3 py-1 px-3 h-10 dark:text-gray-300">{{user_profile.continent}}, {{user_profile.country}}
+                <span class="text-gray-800 mb-2 w-20 font-semibold align-text-bottom mt-3 py-1 px-3 h-10 dark:text-gray-300">{{user_profile.country}}, {{user_profile.city}}
                 </span>
             </div> 
             {%if user_profile.user.username == request.user.username%} 
@@ -173,5 +184,75 @@
     })
     
     themeCheck()
+
+    function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    let user = '{{user_object.username}}'
+    const follow_btn = document.getElementById('follow')
+    const unfollow_btn = document.getElementById('unfollow')
+    const num_of_followers = document.getElementById('num_of_followers')
+    let url = "{%url 'core:follow'%}"
+    const follow_btn1 = document.getElementById('follow_button')
+    function follow(){
+    follow_btn1.addEventListener('click', ()=>{
+           
+        let data = {username:user}
+        fetch(url,{
+            method: "POST",
+            headers: {"Content-Type":"application/json",
+                    "X-CSRFToken": csrftoken},
+            body: JSON.stringify(data),
+        })
+        .then(function (response){
+            responseClone = response.clone()
+            return response.json()
+        })
+        .then(function(data){
+            console.log(data)
+            if (data['checker']==1){
+                follow_btn.classList.remove("bg-blue-500","hover:bg-blue-600")
+                follow_btn.classList.add("bg-red-400","hover:bg-red-500")
+                follow_btn.innerHTML = "Unfollow"
+            }
+            else if (data['checker']==0){
+                follow_btn.classList.remove("bg-red-400","hover:bg-red-500")
+                follow_btn.classList.add("bg-blue-500","hover:bg-blue-600")
+                follow_btn.innerHTML = "Follow"
+            }
+            if (data['num_of_followers']==0){
+                num_of_followers.innerHTML = data['num_of_followers'] + " followers"
+            }
+            if (data['num_of_followers']==1){
+                num_of_followers.innerHTML = data['num_of_followers'] + " follower"
+            }
+            else{
+                num_of_followers.innerHTML = data['num_of_followers'] + " followers"
+            }
+        },function(rejectionReason){
+            console.log("Error parson JSON from response:",rejectionReason, responseClone)
+            responseClone.text()
+            .then(function(bodyText){
+                console.log("Received the following instead of valid JSON:", bodyText)
+            })
+        })
+    })
+ 
+    }
+    follow()
 </script>
 {%endblock%}

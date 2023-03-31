@@ -1,4 +1,3 @@
-//event listener to enable and disable the post button
 const caption = document.getElementById('caption')
 const postimage = document.getElementById('postimage')
 const postbutton = document.getElementById('post')
@@ -41,12 +40,10 @@ const dottedline = document.getElementsByClassName('postoption')
 const delete_post = document.getElementsByClassName('deletepost')
 
 for(var i=0;i<postdiv.length;i++){
-
     function someFunc(i){
         dottedline[i].addEventListener('click', ()=>{
         delete_post[i].classList.toggle('opacity-0')
         })}
-    
     someFunc(i);
 }
 

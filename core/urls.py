@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import CommentView, FollowersView, FollowingView, SearchedUserView, deletePost, indexView, likeView, followView, logoutView, signUpView, loginView,account_settings,likeView,ProfileView, CountriesView, SearchView
+from .views import likeView,CommentView, FollowersView, FollowingView, SearchedUserView, deletePost, indexView, followView, logoutView, signUpView, loginView,account_settings,ProfileView, CountriesView, SearchView
 
 app_name = 'core'
 
 urlpatterns = [
+    path('like-post', likeView, name ='like-post'),
     path('', indexView, name ='home'),
     path('signup',signUpView, name='signup'),
     path('login',loginView, name='login'),
@@ -16,12 +17,7 @@ urlpatterns = [
     path('search', SearchView, name = 'search'),
     path('searched/<str:name>/', SearchedUserView, name = 'searched'),
     path('comments/<str:post_id>/', CommentView, name = 'comments'),
-]
-
-htmx_urlpatterns = [
-    path('like-post',likeView,name='like-post'),
+    path('countries', CountriesView, name ='countries'),
     path('delete-post',deletePost,name='delete-post'),
-    path('countries', CountriesView, name ='countries')
+    path('json',indexView,name='json'),
 ]
-
-urlpatterns += htmx_urlpatterns

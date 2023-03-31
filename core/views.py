@@ -1,13 +1,13 @@
 from django.shortcuts import render,redirect
 from .forms import ProfileForm
-from .models import Search, Profile, Post, LikePost, Follow, Continent, Country, Comments
+from .models import Search, Profile, Post, LikePost, Follow, Comments
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.files.storage import FileSystemStorage
 from itertools import chain
 from django.http import JsonResponse
 import random
+import json
 
 
 @login_required()
@@ -18,28 +18,53 @@ def indexView(request):
     except:
         User.DoesNotExist()
         return redirect('/signup')
-    
+
     post = Post.objects.filter(user=request.user.username)                                     
     user_following = Follow.objects.filter(user=request.user.username)
     #getting all the users on the platform
     all_users = User.objects.all()
+
     #user_object of all those the logged in user is following
     user_following_all = []
     for user_object_following in user_following:
-        user_followed = User.objects.get(username = user_object_following.following)
+        user_followed = User.objects.filter(username = user_object_following.following)
         user_following_all.append(user_followed)
+
     #User object of all accounts the logged in user is not following
     new_suggestion_list = [x for x in list(all_users) if (x not in list(user_following_all))]
     logged_in_user = User.objects.filter(username = request.user.username)
+
     #User object of all accounts the logged in user is not following including the logged in user's
     final_suggestion_list = [x for x in list(new_suggestion_list) if (x not in list(logged_in_user))]
     random.shuffle(final_suggestion_list)
+
     #getting the Profile object from the User instance
     suggested_profile_lists = []
     for users in final_suggestion_list:
         profiles = Profile.objects.filter(user = users)
         suggested_profile_lists.append(profiles)
     suggestion = list(chain(*suggested_profile_lists))
+
+    ##getting users logged in user is not following json format
+    #user_object_json of all those the logged in user is following
+    user_followings_json = []
+    for user_following_json in user_following:
+        user_followed_json = User.objects.filter(username = user_following_json.following)
+        user_followings_json.append(user_followed_json)
+    #all_users_json
+    all_users_json = User.objects.all()
+    #user_object_json of all those the logged in user is not following
+    suggestion_list_json = [x for x in list(all_users_json) if (x not in list(user_followings_json))]
+    #removing the logged in user object from the suggestion_list_json
+    logged_in_user_json = User.objects.filter(username=request.user.username)
+    new_suggestion_json = [x for x in list(suggestion_list_json) if (x not in list(logged_in_user_json))]
+    #getting the profile objects from new_suggestion_json
+    suggested_profiles_json = []
+    for users_json in new_suggestion_json:
+        suggested_profile_json = list(Profile.objects.filter(user = users_json).values())
+        suggested_profiles_json.append(suggested_profile_json)
+    suggest = list(chain(*suggested_profiles_json))   
+
     #getting posts of only users followed by the logged in user and logged in user's posts only
     others_posts = []
     user_posts = []
@@ -51,6 +76,23 @@ def indexView(request):
     all_following_posts=list(chain(*all_others_posts))
     user_post=list(chain(*user_posts))
     joined_posts = all_following_posts + user_post
+    all_posts = Post.objects.all()
+    liked_list = []
+    for each_post in all_posts:
+        liked_by_user = LikePost.objects.filter(liked_by = request.user.username, post_id = each_post.id)
+        liked_list.append(liked_by_user)
+
+    ##to get the json list of posts of user and those followed by user
+    #posts followed by user
+    other_posts_json = []
+    for profile_json in user_following:
+        following_json = list(Post.objects.filter(user=profile_json.following).values())
+        other_posts_json.append(following_json)
+    all_following_json=list(chain(*other_posts_json))
+    #user's post
+    post_json = list(Post.objects.filter(user=request.user.username).values())
+    joined = all_following_json + post_json
+
     if request.method == 'POST':
         if request.FILES.get('postimage') != None and request.POST['caption'] == None:
             post_file = request.FILES.get('postimage')
@@ -69,7 +111,9 @@ def indexView(request):
             post.save()
             return redirect('/')
     context = {
-                'user_post':post,
+                'suggest':suggest,
+                'liked':liked_list,
+                'joined':joined,
                 'posts':joined_posts,
                 'user_profile':user_profile,
                 'other_profiles':suggestion[:4],
@@ -104,7 +148,7 @@ def signUpView(request):
 
                 #creating a profile object once a user successfully signs in
                 user_model=User.objects.get(username=usersname)
-                profile_obj=Profile.objects.create(user=user_model,id_user=user_model.id,name_first=user_model.first_name,name_last=user_model.last_name)
+                profile_obj=Profile.objects.create(user=user_model,id_user=user_model.id,name_first=user_model.first_name,name_last=user_model.last_name,username=user_model.username)
                 profile_obj.save()
                 return redirect('/login')
         else:
@@ -144,11 +188,9 @@ def account_settings(request):
     user_object = User.objects.get(username=request.user.username)
     user_profile = Profile.objects.get(user=user_object)
     post=Post.objects.filter(user=user_profile)
-    continents = Continent.objects.all()
     context={
                 'user_profile':user_profile,
                 'post':post,
-                'continents':continents,
                 'user_object':user_object
             }
     if request.method == 'POST':
@@ -188,40 +230,38 @@ def account_settings(request):
             user_profile.background_profile_pics = background_profile_pics
             user_profile.save()
             return redirect('/profile/'+username)
-        if request.POST['continent'] != None and request.POST['bio'] == None:
+        if request.POST['country'] != None and request.POST['bio'] == None:
             profile_pics = user_profile.profile_pics
             background_profile_pics = user_profile.background_profile_pics
             bio = request.POST['bio']
-            get_continents = request.POST.get('continent')
-            countries = request.POST.get('country')
-            continent = Continent.objects.get(id = get_continents)
-            country = Country.objects.get(id = countries)
-            user_profile.continent = continent
+            country = request.POST.get('country')
+            city = request.POST.get('city')
             user_profile.country = country
+            user_profile.city = city
             user_profile.profile_pics = profile_pics
             user_profile.background_profile_pics = background_profile_pics
             user_profile.bio = bio
             user_profile.save()
             return redirect('/profile/'+username)
-        if request.POST['bio'] != None and request.POST['continent'] == "Select Continent":
+        if request.POST['bio'] != None and request.POST['country'] == "":
             profile_pics = user_profile.profile_pics
             background_profile_pics = user_profile.background_profile_pics
             bio = request.POST['bio']
-            continent = user_profile.continent
-            user_profile.continent = continent
             country = user_profile.country
             user_profile.country = country
+            city = user_profile.city
+            user_profile.city= city
             user_profile.profile_pics = profile_pics
             user_profile.background_profile_pics = background_profile_pics
             user_profile.bio = bio
             user_profile.save()
             return redirect('/profile/'+username)
-        if request.POST['bio'] == None and request.POST['continent'] == "Select Continent":
+        if request.POST['bio'] == None and request.POST['country'] == "":
             bio = request.POST['bio']
-            continent = user_profile.continent
-            user_profile.continent = continent
             country = user_profile.country
             user_profile.country = country
+            city = user_profile.city
+            user_profile.city = city
             profile_pics = user_profile.profile_pics
             background_profile_pics = user_profile.background_profile_pics
             user_profile.profile_pics = profile_pics
@@ -229,12 +269,12 @@ def account_settings(request):
             user_profile.bio = bio
             user_profile.save()
             return redirect('/profile/'+username)
-        if request.POST['bio'] =="" and request.POST['continent'] == "Select Continent":
+        if request.POST['bio'] =="" and request.POST['country'] == "":
             bio = request.POST['bio']
-            continent = user_profile.continent
-            user_profile.continent = continent
             country = user_profile.country
             user_profile.country = country
+            city = user_profile.city
+            user_profile.city = city
             profile_pics = user_profile.profile_pics
             background_profile_pics = user_profile.background_profile_pics
             user_profile.bio = bio
@@ -242,12 +282,11 @@ def account_settings(request):
             user_profile.background_profile_pics = background_profile_pics
             user_profile.save()
             return redirect('/profile/'+username)
-        if request.POST['continent'] != None and request.POST['country'] == 'Select Country':
-            get_continents = request.POST.get('continent')
-            continent = Continent.objects.get(id = get_continents)
-            user_profile.continent = continent
-            country = None
+        if request.POST['country'] != None and request.POST['city'] == "":
+            country = request.POST.get('country')
             user_profile.country = country
+            city = request.POST.get('city')
+            user_profile.city = city
             bio = request.POST['bio']
             profile_pics = user_profile.profile_pics
             background_profile_pics = user_profile.background_profile_pics
@@ -256,13 +295,11 @@ def account_settings(request):
             user_profile.background_profile_pics = background_profile_pics
             user_profile.save()
             return redirect('/profile/'+username)
-        if request.POST['continent'] and request.POST['country'] != None:
-            get_continents = request.POST.get('continent')
-            continent = Continent.objects.get(id = get_continents)
-            user_profile.continent = continent
-            get_country = request.POST.get('country')
-            country = Country.objects.get(id = get_country)
+        if request.POST['country'] and request.POST['city'] != None:
+            country = request.POST.get('country')
             user_profile.country = country
+            city = request.POST.get('city')
+            user_profile.city = city
             bio = request.POST['bio']
             profile_pics = user_profile.profile_pics
             background_profile_pics = user_profile.background_profile_pics
@@ -283,7 +320,7 @@ def account_settings(request):
     return render(request,'settings.html',context)
 
 
-@login_required()
+"""@login_required()
 def likeView(request):
     username = request.user.username
     post_id=request.GET.get('post_id')
@@ -298,8 +335,36 @@ def likeView(request):
         liked_post.delete()
         post.likes.remove(liked_post)
         post.save()
-        return redirect('/')
+        return redirect('/')"""
 
+
+@login_required()
+def likeView(request):
+    if request.method == "POST":
+        username = request.user.username
+        data = json.loads(request.body)
+        print(data)
+        id = data["id"]
+        post=Post.objects.get(id=id)
+        liked_post = LikePost.objects.filter(post_id=id, liked_by=username).first()
+        if liked_post == None:
+            new_like = LikePost.objects.create(post_id=id,liked_by=username,post_reference=post)
+            new_like.save()
+            post.likes.add(new_like)
+            post.num_of_likes + 1
+            post.save()
+            checker = 1
+        else:
+            liked_post.delete()
+            post.likes.remove(liked_post)
+            checker = 0
+            post.num_of_likes - 1
+            post.save()
+        liked = LikePost.objects.filter(post_id=id)
+        likes = liked.count()
+        print(post.likes.count())
+        context = {'checker':checker, "num_of_likes":likes}
+        return JsonResponse(context, safe=False)
 
 @login_required()
 def CommentView(request,post_id):
@@ -429,7 +494,7 @@ def SearchedUserView(request,name):
     return render(request,'searcheduser.html',context)
 
 
-@login_required()
+'''@login_required()
 def followView(request):
     username=request.user.username
     user_object = User.objects.get(username=username)
@@ -448,8 +513,33 @@ def followView(request):
         return redirect('/profile/'+otheruser_username)
     else:
         followed.delete()
-        return redirect('/profile/'+otheruser_username)
+        return redirect('/profile/'+otheruser_username)'''
 
+@login_required()
+def followView(request):
+    if request.method == 'POST':
+        username = request.user.username
+        user_object = User.objects.get(username = username)
+        user_profile = Profile.objects.get(user=user_object)
+        data = json.loads(request.body)
+        other_username = data['username']
+        following_object = User.objects.get(username = other_username)
+        following_profile = Profile.objects.get(user=following_object)
+        followed = Follow.objects.filter(following = other_username, user=username).first()
+        if followed == None:
+            following = Follow.objects.create(following = other_username, user=username,user_profile=user_profile)
+            following.save()
+            user_profile.following = following
+            following_profile.followers = following
+            user_profile.save()
+            checker = 1
+        else:
+            followed.delete()
+            checker = 0
+        user_followers = Follow.objects.filter(following = other_username)
+        followers = len(user_followers)
+        context = {'checker':checker,'num_of_followers':followers}
+        return JsonResponse(context,safe=False)
 
 @login_required()
 def CountriesView(request):

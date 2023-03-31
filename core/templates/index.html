@@ -1,8 +1,8 @@
 {%extends 'base.html'%}
 {%load static%}
 {%block content%}
-<div class="bg-white dark:bg-black overflow-hidden">
-    <div class="text-gray-100 flex justify-center pb-4 sticky top-0 bg-white dark:bg-black z-10">
+<div class="bg-white dark:bg-black">
+    <div class="flex justify-center pb-4 sticky top-0 bg-white dark:bg-black z-10">
         {%include 'partials/navbar2.html'%}
     </div>
     <section class="post_id flex justify-center mx-auto bg-white dark:bg-black max-w-6xl">
@@ -79,23 +79,32 @@
                             </div>
                             <div class="p-4">
                                 <div class="flex">
-                                    <div class="cursor-pointer">
-                                        <form action="" class="like" id="like" method="POST"> {%csrf_token%}
-                                            <a href="/like-post?post_id={{post.id}}" name="post_id" id="post_id">
-                                                 
-                                            <i id="like_button" class="text-2xl like_button fa-regular fa-heart cursor-pointer dark:text-gray-300" name="post_id" id="post_id"></i>                                                                                               
-                                              
-                                            </a>
-                                        </form>        
-                                    </div>
+                                    <!--<form action="" class="like" id="like" method="POST"> {%csrf_token%}
+                                        <a href="/like-post?post_id={{post.id}}">
+                                            {%if post.id == liked_post.post_id%}
+                                            <i id="like_button" class="text-2xl like_button fa-solid fa-heart cursor-pointer text-blue-600" name="post_id" id="post_id"></i>
+                                            {%else%}
+                                            <i id="like_button" class="text-2xl like_button fa-regular fa-heart cursor-pointer dark:text-gray-300" name="post_id" id="post_id"></i>        
+                                            {%endif%}
+                                        </a>  
+                                    </form>-->   
+                                    <button class="like">
+                                   
+                                        {%if post.likes.count >= 1%}
+                                        <i class="like_button text-2xl text-blue-500 fa-solid fa-heart cursor-pointer dark:text-blue-500" name="post_id" id="post_id"></i>
+                                        {%else%}
+                                        <i class="like_button text-2xl fa-regular fa-heart cursor-pointer dark:text-gray-300" name="post_id" id="post_id"></i>
+                                        {%endif%} 
+                                
+                                    </button>
                                     <a href="{%url 'core:comments' post_id=post.id %}">
                                         <i class="text-2xl fa-regular fa-comment pl-4 dark:text-gray-300"></i>
                                     </a>    
                                 </div>
-                                <p class="dark:text-gray-400">{{post.likes.count}} 
-                                    {%if post.likes.count == 0%}
+                                <p class="num dark:text-gray-400">{{post.num_of_likes}} 
+                                    {%if post.num_of_likes == 0%}
                                         likes
-                                    {% elif post.likes.count == 1%}
+                                    {%elif post.num_of_likes == 1%}
                                         like
                                     {%else%}
                                         likes
@@ -111,7 +120,6 @@
                         </div>
                         
                     </div>
-
                     {%endfor%}
                 </div>
             {%else%}
@@ -125,21 +133,24 @@
             <div>
                 <p class="dark:text-gray-200 text-gray-900 px-2 py-4 font-semibold border-t-2 border-gray-200 mt-5 dark:border-gray-700">Suggested For You</p>
                 {%for other_profile in other_profiles%}
-                    <div class="flex justify-between bg-gray-100 dark:bg-gray-900  m-7 p-4 rounded-md">
+                    <div class="other_profiles flex justify-between bg-gray-100 dark:bg-gray-900  m-7 p-4 rounded-md">
                         <a href="{% url 'core:profile' username=other_profile.user.username %}">
                             <div>
                                 <p class="text-black dark:text-gray-200 pl-2 pb-2 font-semibold">@{{other_profile.user.username}}</p>
                                 <img src="{{other_profile.profile_pics.url}}" class="profile_img w-24 h-24 border-2 border-gray-300 dark:border-0" alt="">
                             </div>
                         </a>
-                        <span>
-                            <form action="" method="POST">{%csrf_token%}
-                                <a href="{% url 'core:profile' username=other_profile.user.username %}" name="username">
-                                    <p class="bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
-                                        View Profile
-                                    </p>
-                                </a>
-                            </form>    
+                        <span class="my-auto">
+                            <!--<a href="{% url 'core:profile' username=other_profile.user.username %}" name="username">
+                                <p class="bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
+                                    View Profile
+                                </p>
+                            </a>-->
+                            <button class="follow_btn">
+                                <p class="follow bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
+                                    Follow
+                                </p>
+                            </button>
                         </span>
                     </div>    
                 {%endfor%}
@@ -148,5 +159,151 @@
     </section>   
     {%include 'partials/footnote.html'%}
 </div>
-{%endblock%}
+<script type="text/javascript">
+    
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
 
+const postdiv1 = document.getElementsByClassName('postdiv')
+
+let posts_ids = []
+let posts = '{{joined}}'
+let new_posts = posts.replace(/&#x27;/ig, '"')
+let final_posts = new_posts.replace(/UUID/ig, '')
+let last_posts = final_posts.replaceAll('(', '')
+let finite_posts = last_posts.replaceAll(')', '')
+let end_posts = finite_posts.replace(/datetime.datetime/ig, '"datetime.datetime')
+let total_posts = end_posts.replace(/utc/ig, 'utc"')
+let js_posts = JSON.parse(total_posts)
+
+for(i=0;i<postdiv1.length;i++){
+        let post_id = js_posts[i]["id"]
+        posts_ids.push(post_id)
+}    
+
+/*let posts_ids_strings = JSON.stringify(posts_ids)*/
+
+let num_of_likes = document.getElementsByClassName('num')
+const like_btn = document.getElementsByClassName('like_button')
+var responseClone
+let url ="like-post"
+for(i=0;i<posts_ids.length;i++){
+    function likePost(i){
+    like_btn[i].addEventListener('click',()=>{
+        let data = {id:posts_ids[i]}
+        console.log(total_posts)
+        fetch( url, {
+            method: "POST",
+            headers: {"Content-Type":"application/json",
+                    'X-CSRFToken': csrftoken},
+            body : JSON.stringify(data),
+        })
+        .then(function (response){
+            responseClone = response.clone()
+            return response.json()
+        })
+        .then(function (data) {
+            console.log(data)
+            if (data["checker"]==1){
+                like_btn[i].classList.remove("fa-regular","dark:text-gray-300")
+                like_btn[i].classList.add("fa-solid","text-blue-500","dark:text-blue-500")
+            }
+            if (data["checker"]==0){
+                like_btn[i].classList.add("fa-regular","dark:text-gray-300")
+                like_btn[i].classList.remove("fa-solid","text-blue-500","dark:text-blue-500")
+            }
+            if(data['num_of_likes'] == 0){
+                 num_of_likes[i].innerHTML = data['num_of_likes'] + " likes"}
+            else if (data['num_of_likes'] == 1){
+                 num_of_likes[i].innerHTML = data['num_of_likes'] + " like"
+            }
+            else{
+                num_of_likes[i].innerHTML = data['num_of_likes'] + " likes"
+            }
+        },function(rejectionReason){
+            console.log("Error parson JSON from response:",rejectionReason, responseClone)
+            responseClone.text()
+            .then(function(bodyText){
+                console.log("Received the following instead of valid JSON:", bodyText)
+            })
+        })    
+    }) 
+} 
+likePost(i)
+}
+
+let other_profiles = document.getElementsByClassName('other_profiles')
+let option = document.getElementsByClassName('follow')
+const follow_btn = document.getElementsByClassName('follow_btn')
+let profiles_usernames = []
+let profiles = "{{suggest}}"
+let new_profiles = profiles.replace(/&#x27;/ig, '"')
+let final_profiles = new_profiles.replace(/UUID/ig, '')
+let last_profiles = final_profiles.replaceAll('(', '')
+let finite_profiles = last_profiles.replaceAll(')', '')
+let end_profiles = finite_profiles.replace(/datetime.datetime/ig, '"datetime.datetime')
+let total_profiles = end_profiles.replace(/utc/ig, 'utc"')
+let totals = total_profiles.replace(/None/ig, '""')
+let js_profiles = JSON.parse(totals)
+
+for(i=0;i<other_profiles.length;i++){
+    let profile_username = js_profiles[i]["username"]
+    profiles_usernames.push(profile_username)
+}
+
+for(i=0;i<other_profiles.length;i++){
+    function follow(i){
+        follow_btn[i].addEventListener('click',()=>{
+            let data = {username:profiles_usernames[i]}
+            console.log(totals)
+            console.log(profiles_usernames)
+            fetch("{%url 'core:follow'%}",{
+                method: "POST",
+                headers: {"Content-Type":"application/json",
+                        "X-CSRFToken": csrftoken},
+                body: JSON.stringify(data),
+            })
+            .then(function(response){
+                responseClone = response.clone()
+                return response.json()
+            })
+            .then(function(data){
+            console.log(data)
+            if (data['checker']==1){
+                option[i].classList.remove("bg-blue-500","hover:bg-blue-600")
+                option[i].classList.add("bg-red-400","hover:bg-red-500")
+                option[i].innerHTML = "Unfollow"
+            }
+            else if (data['checker']==0){
+                option[i].classList.remove("bg-red-400","hover:bg-red-500")
+                option[i].classList.add("bg-blue-500","hover:bg-blue-600")
+                option[i].innerHTML = "Follow"
+            }
+            },function(rejectionReason){
+            console.log("Error parson JSON from response:",rejectionReason, responseClone)
+            responseClone.text()
+            .then(function(bodyText){
+                console.log("Received the following instead of valid JSON:", bodyText)
+            })
+        })
+        })
+    }
+follow(i)
+}
+
+</script>
+{%endblock%}
