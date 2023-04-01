@@ -167,3 +167,13 @@ NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000','https://socialsbyjonah.social','https://www.socialsbyjonah.social','https://djangosocialwebapp-production-f41f.up.railway.app']
+
+
+#email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = "587"
+EMAIL_HOST_USER = "techforjonah@gmail.com"
+EMAIL_HOST_PASSWORD = "kpazfjxgamlcfbqg"
+EMAIL_USE_TLS = True
+#EMAIL_USE_SSL = False

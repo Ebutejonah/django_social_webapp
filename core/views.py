@@ -8,6 +8,7 @@ from itertools import chain
 from django.http import JsonResponse
 import random
 import json
+from django.core.mail import send_mail
 
 
 @login_required()
@@ -134,6 +135,13 @@ def signUpView(request):
         email = request.POST['email']
         password = request.POST['password1']
         password2 = request.POST['password2']
+        send_mail(
+            first_name +" " +last_name + " welcome",
+            "You have signed up for our services. Welcome",
+            'techforjonah@gmail.com',
+            [email],
+            fail_silently=False
+        )
         #authenticating password & checking if email and username already exist in the database
         if password == password2:
             if User.objects.filter(username=usersname).exists():
