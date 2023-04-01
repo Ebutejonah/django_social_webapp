@@ -14,10 +14,15 @@
                     <input disabled id="searchbutton" type="submit" value="Search" class="ml-8 px-2 bg-gray-200 rounded-full text-black cursor-pointer shadow-white shadow-sm">   
                 </form>
             </div>
+            {%if other_profiles%}
             <div class="border-t-2 border-gray-200 dark:border-gray-600 mt-6">
                 <p class="text-gray-900 dark:text-gray-200 pt-6 font-semibold pl-4 text-center">Suggested For You</p>
+            {%else%}
+            <div class="border-t-2 border-gray-200 dark:border-gray-600 mt-6 h-screen">
+                <p class="text-gray-900 dark:text-gray-200 pt-6 font-semibold pl-4 text-center">No accounts on to follow</p>
+            {%endif%}
                 {%for other_profile in other_profiles%}
-                <div class="grid-cols-2 last:mb-20 flex justify-center mx-auto">
+                <div class="grid-cols-2 md:last:mb-96 last:mb-32 flex justify-center mx-auto">
                     <div class="flex justify-between bg-gray-100 dark:bg-gray-900 m-7 p-4 rounded-md space-x-14 md:space-x-32 xl:space-x-40">
                         <a href="{% url 'core:profile' username=other_profile.user.username %}">
                             <div>
@@ -38,7 +43,10 @@
             </div>
         </div>
     </div>
-    {%include 'partials/footnote.html'%}
+    <div class="stiicky bottom-0 z-10">
+        {%include 'partials/footnote.html'%}
+    </div>
+    
 </div>
 
 

@@ -729,6 +729,10 @@ select {
   top: 0px;
 }
 
+.bottom-0 {
+  bottom: 0px;
+}
+
 .z-10 {
   z-index: 10;
 }
@@ -1503,6 +1507,10 @@ select {
   margin-bottom: 5rem;
 }
 
+.last\:mb-32:last-child {
+  margin-bottom: 8rem;
+}
+
 .hover\:rounded-full:hover {
   border-radius: 9999px;
 }
@@ -1695,6 +1703,10 @@ select {
 
   .md\:pr-4 {
     padding-right: 1rem;
+  }
+
+  .md\:last\:mb-96:last-child {
+    margin-bottom: 24rem;
   }
 }
 
