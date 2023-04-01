@@ -9,6 +9,7 @@ from django.http import JsonResponse
 import random
 import json
 from django.core.mail import send_mail
+from django.conf import settings
 
 
 @login_required()
@@ -138,7 +139,7 @@ def signUpView(request):
         send_mail(
             first_name +" " +last_name + " welcome",
             "You have signed up for our services. Welcome",
-            'techforjonah@gmail.com',
+            settings.EMAIL_HOST_USER,
             [email],
             fail_silently=False
         )
