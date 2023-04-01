@@ -169,7 +169,7 @@ def loginView(request):
                 messages.info(request,'Invalid Username or Password')
         except:
             User.DoesNotExist()
-            messages.info(request,'THIS USER DOES NOT EXIST!')
+            messages.info(request,'Invalid Username or Password')
         user = auth.authenticate(username=usersname,password=password)
         if user is not None:
             auth.login(request,user)
