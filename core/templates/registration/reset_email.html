@@ -1,12 +1,24 @@
 {%extends 'base.html'%}
 {%load static%}
 {%block content%}
-
-<h3>Enter new Password</h3>
-<p>Please enter your password twice</p>
-<form method="POST">{%csrf_token%}
-    {{form}}
-    <input type="Submit" name="Update Password">
-</form>
+<div class="flex justify-center m-auto">
+    <div>
+        <h3 class="font-semibold">Enter New Password</h3>
+        <p>Please enter your password twice</p>
+        <form method="POST">{%csrf_token%}
+            <p class="py-2">
+                <label for="id_new_password1">New password: 
+                <input calss="rounded-lg px-2 py-4" type="password" name="new_password1" autocomplete="new-password" required id="id_new_password1">
+            </p>
+            <p class="py-2">
+                <label for="id_new_password2">New password confirmation:</label>
+                <input calss="rounded-lg px-2 py-4" type="password" name="new_password2" autocomplete="new-password" required id="id_new_password2">
+            </p>
+            <input type="Submit" name="Update Password">
+        </form>
+    </div>
+</div>
 
 {%endblock%}
+
+
