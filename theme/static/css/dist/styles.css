@@ -911,6 +911,10 @@ select {
   margin-top: 6rem;
 }
 
+.mb-7 {
+  margin-bottom: 1.75rem;
+}
+
 .block {
   display: block;
 }
@@ -1425,6 +1429,10 @@ select {
   padding-top: 0.75rem;
 }
 
+.pt-8 {
+  padding-top: 2rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -1810,6 +1818,10 @@ select {
 
   .md\:pt-32 {
     padding-top: 8rem;
+  }
+
+  .md\:pt-20 {
+    padding-top: 5rem;
   }
 
   .md\:text-lg {
