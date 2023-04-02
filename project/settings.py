@@ -26,7 +26,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','socialsbyjonah.social','www.socialsbyjonah.social','djangosocialwebapp-production-f41f.up.railway.app']
 

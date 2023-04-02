@@ -8,11 +8,14 @@
     </div>
     <div class="bg-white dark:bg-black max-w-6xl mx-auto flex justify-center container">
         <div class=" py-10 border-l-2 border-gray-300 dark:border-gray-600 px-2 w-full">
-            <div class="flex justify-center pb-3">
+            <div class="flex justify-between pb-3">
                 <span>
                     <p class="font-semibold uppercase text-xl text-gray-700 dark:text-white">{{user_profile.name_last}}&nbsp;&nbsp;{{user_profile.name_first}}</p>
                     <p class="text-gray-500 dark:text-gray-300 text-center">@{{user_profile.user.username}}</p>
-                </span>       
+                </span>  
+                <span>
+                    <p class="dark:text-gray-300 md:p-2 p-1 border-gray-300 border-2 rounded-lg text-sm"><a href="{%url 'password_change'%}">Change Password</a></p>
+                </span>     
             </div>
             <form action="" method="POST" id="form_data" enctype="multipart/form-data">{%csrf_token%} 
                 <div>
