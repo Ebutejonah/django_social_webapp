@@ -136,16 +136,13 @@ def signUpView(request):
         email = request.POST['email']
         password = request.POST['password1']
         password2 = request.POST['password2']
-        send_mail(
-            first_name +" " +last_name + " welcome",
-            "You have signed up for our services. Welcome",
-            settings.EMAIL_HOST_USER,
-            [email],
-            fail_silently=False
-        )
+    
         #authenticating password & checking if email and username already exist in the database
         if password == password2:
-            if User.objects.filter(username=usersname).exists():
+            if len(password) < 8:
+                messages.info(request,'Your Password Must Be At Least 8 Characters')
+                return redirect('/signup')
+            elif User.objects.filter(username=usersname).exists():
                 messages.info(request,'Invalid credentials. Please fill form again.')
                 return redirect('/signup')
             elif User.objects.filter(email=email).exists():
@@ -157,8 +154,15 @@ def signUpView(request):
 
                 #creating a profile object once a user successfully signs in
                 user_model=User.objects.get(username=usersname)
-                profile_obj=Profile.objects.create(user=user_model,id_user=user_model.id,name_first=user_model.first_name,name_last=user_model.last_name,username=user_model.username)
+                profile_obj=Profile.objects.create(user=user_model,id_user=user_model.id,name_first=user_model.first_name,name_last=user_model.last_name,username=user_model.username,email=user_model.email)
                 profile_obj.save()
+                send_mail(
+                    first_name +" " +last_name + ", welcome to Social Book",
+                    "You have signed up for our services. We are glad to have you!",
+                    settings.EMAIL_HOST_USER,
+                    [email],
+                    fail_silently=False
+                )
                 return redirect('/login')
         else:
             messages.info(request,'Passwords must match')

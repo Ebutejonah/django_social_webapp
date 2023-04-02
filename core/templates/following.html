@@ -15,7 +15,7 @@
                 {%for profile in profiles reversed%}
                 <div class="flex justify-between py-4 px-2">
                     <div>
-                        <a href="{%url 'core:profile' username=profile.user.username%}" class="flex space-x-3">
+                        <a href="{%url 'profile' username=profile.user.username%}" class="flex space-x-3">
                             <img class="rounded-full w-14 h-14" src="{{profile.profile_pics.url}}" alt="profile_image">
                             <div>
                                 <p class="font-semibold text-gray-700 dark:text-white">@{{profile.user.username}}</p>
@@ -34,7 +34,7 @@
             {%else%}
             <div class="mt-20 flex justify-center text-gray-600 dark:text-gray-200 md:pr-16">
                 <div class="flex flex-col items-center">
-                    <a href="{%url 'core:search'%}"><i class="fa-solid fa-user-plus text-7xl p-10 border-2 border-gray-600 dark:border-gray-200 rounded-full w-40 h-40"></i></a>
+                    <a href="{%url 'search'%}"><i class="fa-solid fa-user-plus text-7xl p-10 border-2 border-gray-600 dark:border-gray-200 rounded-full w-40 h-40"></i></a>
                     <p class="font-semibold text-5xl py-10 text-center">Accounts You Follow</p>
                     <p class="flex text-center text-lg px-2">Once you follow accounts, you'll see them here.</p>
                 </div>   

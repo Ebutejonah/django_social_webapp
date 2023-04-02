@@ -8,7 +8,7 @@
     <div class="h-full flex justify-center max-w-6xl container mx-auto bg-white dark:bg-black">
         <div class="pb-28 w-full border-l-2 border-gray-300 dark:border-gray-600">
             <div class="flex justify-center mt-14">
-                <a href="{%url 'core:search'%}">
+                <a href="{%url 'search'%}">
                     <p class="text-gray-600 dark:text-white text-lg p-2 border-2 border-gray-300 rounded-full text-center dark:hover:text-gray-300 dark:hover:border-white duration-300 bg-gray-200 dark:bg-black">Go Back</p>
                 </a>
             </div>
@@ -18,14 +18,14 @@
                 {%for profile in profiles%}
                 <div class="grid-cols-2 flex justify-center mx-auto">
                     <div class="flex justify-between bg-gray-100 dark:bg-gray-900 m-7 p-4 rounded-md space-x-14 md:space-x-32 xl:space-x-40">
-                        <a href="{% url 'core:profile' username=profile.user.username %}">
+                        <a href="{% url 'profile' username=profile.user.username %}">
                             <div>
                                 <p class="pl-2 pb-2 font-semibold text-black dark:text-gray-200">@{{profile.user.username}}</p>
                                 <img src="{{profile.profile_pics.url}}" class="profile_img w-24 h-24 border-2 border-gray-300 dark:border-0" alt="">
                             </div>
                         </a>
                         <span class="my-auto">
-                            <a href="{% url 'core:profile' username=profile.user.username %}" name="username">
+                            <a href="{% url 'profile' username=profile.user.username %}" name="username">
                                 <p class="bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
                                     View Profile
                                 </p>

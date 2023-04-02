@@ -8,7 +8,7 @@
 module.exports = {
     content: [
         '../../core/templates/*.html','../../core/templates/partials/*.html','../../core/static/main.js',
-       
+        '../../core/templates/registration/*.html'
     ],
     theme: {
         extend: {},

@@ -18,7 +18,7 @@ class Profile(models.Model):
     bio = models.TextField(blank = True, null = True,default="")
     followers = models.ForeignKey('Follow', on_delete=models.CASCADE,blank=True,null=True,related_name='followers')
     following = models.ForeignKey('Follow', on_delete=models.CASCADE,blank=True,null=True)
-
+    email = models.EmailField(null=True,blank=True)
     def __str__(self):
         return self.user.username
     

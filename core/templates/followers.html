@@ -15,7 +15,7 @@
                 {%for profile in profiles reversed%}
                 <div class="flex justify-between py-4 px-2">
                     <div>
-                        <a href="{%url 'core:profile' username=profile.user.username%}" class="flex space-x-3">
+                        <a href="{%url 'profile' username=profile.user.username%}" class="flex space-x-3">
                             <img class="rounded-full w-14 h-14" src="{{profile.profile_pics.url}}" alt="profile_image">
                             <div>
                                 <p class="font-semibold text-gray-700 dark:text-white">@{{profile.user.username}}</p>

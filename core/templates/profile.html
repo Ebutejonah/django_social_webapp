@@ -14,7 +14,7 @@
                 </span>
                 <span>
                     {%if user_profile.user.username == request.user.username%}
-                        <a href="{%url 'core:settings'%}" class="text-white items-center px-2 border-2 py-1 rounded-full bg-blue-600 hover:bg-blue-600 duration-500">Edit Profile</a>
+                        <a href="{%url 'settings'%}" class="text-white items-center px-2 border-2 py-1 rounded-full bg-blue-600 hover:bg-blue-600 duration-500">Edit Profile</a>
                     {%else%}
                         <!--<a href="/follow?username={{user_profile.user.username}}">
                             {%if is_following%}
@@ -206,7 +206,7 @@
     const follow_btn = document.getElementById('follow')
     const unfollow_btn = document.getElementById('unfollow')
     const num_of_followers = document.getElementById('num_of_followers')
-    let url = "{%url 'core:follow'%}"
+    let url = "{%url 'follow'%}"
     const follow_btn1 = document.getElementById('follow_button')
     function follow(){
     follow_btn1.addEventListener('click', ()=>{

@@ -12,7 +12,7 @@
             <span class="text-red-400">{{message}}</span>
         {%endfor%}
         <p class="dark:text-white text-gray-600">Don't have an account?
-            <a href="{%url 'core:signup'%}" class="text-blue-600 hover:text-blue-500 dark:text-blue-500 dark:hover:text-blue-400 font-semibold">Sign Up</a>
+            <a href="{%url 'signup'%}" class="text-blue-600 hover:text-blue-500 dark:text-blue-500 dark:hover:text-blue-400 font-semibold">Sign Up</a>
         </p>
         <form action="" method="POST" class="pt-6">{%csrf_token%}
             <p class="pb-2"><input class="px-2 border-2 border-gray-300 rounded-md" required type="text" placeholder="Username" name="username"></p>   

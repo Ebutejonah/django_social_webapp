@@ -14,7 +14,7 @@
             <div class="pt-7 border-l-2 border-gray-200 dark:border-gray-600 w-full">
                 <div class="mb-60 justify-center space-x-4 mx-8">
                     <img src="{{post.profile.profile_pics.url}}" alt="" class="w-32 h-32 rounded-full">
-                    <a class="text-blue-600 font-bold" href="{%url 'core:profile' username=post.user%}">@{{post.user}}</a>
+                    <a class="text-blue-600 font-bold" href="{%url 'profile' username=post.user%}">@{{post.user}}</a>
                     <p class="text-gray-600 dark:text-white break-all">{{post.caption}}</p>   
                 </div>
                 {%if all_comments%}
@@ -29,11 +29,11 @@
                     <div class="border-y-2 border-gray-300 dark:border-gray-700">
                         <div class="flex-col mx-8 py-10">
                             <div>
-                                <a href="{%url 'core:profile' username=all_comment.author%}"><img src="{{all_comment.profile.profile_pics.url}}" class="w-14 h-14 rounded-full" alt=""></a>
+                                <a href="{%url 'profile' username=all_comment.author%}"><img src="{{all_comment.profile.profile_pics.url}}" class="w-14 h-14 rounded-full" alt=""></a>
                             </div>
                             <div class="space-x-4">    
                                 <div>
-                                    <a href="{%url 'core:profile' username=all_comment.author%}"><span class="text-blue-600 font-bold">@{{all_comment.author}}</span></a><span class=" dark:text-white break-words">&nbsp;&nbsp;&nbsp;{{all_comment.comments}}</span>
+                                    <a href="{%url 'profile' username=all_comment.author%}"><span class="text-blue-600 font-bold">@{{all_comment.author}}</span></a><span class=" dark:text-white break-words">&nbsp;&nbsp;&nbsp;{{all_comment.comments}}</span>
                                 </div>
                             </div>
                             <p class="dark:text-gray-400">{{all_comment.time_of_comment}}</p>
