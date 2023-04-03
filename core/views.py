@@ -8,8 +8,9 @@ from itertools import chain
 from django.http import JsonResponse
 import random
 import json
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.conf import settings
+from django.template.loader import render_to_string
 
 
 @login_required()
@@ -156,13 +157,15 @@ def signUpView(request):
                 user_model=User.objects.get(username=usersname)
                 profile_obj=Profile.objects.create(user=user_model,id_user=user_model.id,name_first=user_model.first_name,name_last=user_model.last_name,username=user_model.username,email=user_model.email)
                 profile_obj.save()
-                send_mail(
-                    first_name +" " +last_name + ", welcome to Social Book",
-                    "You have signed up for our services. We are glad to have you!",
+
+                template = render_to_string('registration/welcome.html',{'first_name':first_name,'last_name':last_name,'username':usersname})
+                email_to_send=EmailMessage(
+                    "Welcome to Social Book",
+                    template,
                     settings.EMAIL_HOST_USER,
-                    [email],
-                    fail_silently=False
+                    [email],    
                 )
+                email_to_send.fail_silently=False
                 return redirect('/login')
         else:
             messages.info(request,'Passwords must match')
