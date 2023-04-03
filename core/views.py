@@ -158,7 +158,7 @@ def signUpView(request):
                 profile_obj=Profile.objects.create(user=user_model,id_user=user_model.id,name_first=user_model.first_name,name_last=user_model.last_name,username=user_model.username,email=user_model.email)
                 profile_obj.save()
 
-                template = render_to_string('registration/welcome.html',{'first_name':first_name,'last_name':last_name,'username':usersname})
+                template = render_to_string('core/welcome.html',{'first_name':first_name,'last_name':last_name,'username':usersname})
                 email_to_send=EmailMessage(
                     "Welcome to Social Book",
                     template,
