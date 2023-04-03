@@ -166,6 +166,7 @@ def signUpView(request):
                     [email],    
                 )
                 email_to_send.fail_silently=False
+                email_to_send.send()
                 return redirect('/login')
         else:
             messages.info(request,'Passwords must match')
