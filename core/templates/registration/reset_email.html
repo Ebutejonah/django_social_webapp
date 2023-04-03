@@ -2,7 +2,7 @@
 {%load static%}
 {%block content%}
 <div class="flex max-w-4xl justify-center mx-auto items-center border-x-2 border-gray-300 h-screen">
-    <div class="p-6 bg-slate-200 dark:bg-black border-2 border-blue-300 rounded-lg">
+    <div class="py-6 px-3 bg-slate-200 dark:bg-black border-2 border-blue-300 rounded-lg">
         <h3 class="font-semibold text-center dark:text-gray-200">Enter New Password</h3>
         <p>Please enter your password twice</p>
         <form method="POST">{%csrf_token%}
