@@ -20,7 +20,7 @@
             <form action="" method="POST" id="form_data" enctype="multipart/form-data">{%csrf_token%} 
                 <div>
                     <a href="{{user_profile.background_profile_pics.url}}">
-                        <img src="{{user_profile.background_profile_pics.url}}" class="rounded-lg object-cover w-full" alt="Background Image">
+                        <img src="{{user_profile.background_profile_pics.url}}" class="rounded-lg  h-36 md:h-64 w-full object-cover" alt="Background Image">
                     </a>    
                     
                 </div>
@@ -40,7 +40,7 @@
           
                 <p class="font-semibold text-gray-500 dark:text-gray-300 flex justify-center mt-10 text-xl">BIO</p> 
                 <textarea id='bio' class="w-full h-44 border-2 resize-none mt-5 px-3" type="text" placeholder="Bio" name="bio">{{user_profile.bio}}</textarea>
-                <p class="pb-2"><input class="px-2 border-2 border-gray-300 rounded-md" type="text" placeholder="Country" name="country" value="{{user_profile.country}}" required></p>
+                <p class="pb-2"><input class="px-2 border-2 border-gray-300 rounded-md" type="text" placeholder="Country" name="country" value="{{user_profile.country}}"></p>
                 <p class="pb-2"><input class="px-2 border-2 border-gray-300 rounded-md" type="text" placeholder="City" name="city" value="{{user_profile.city}}"></p>
                 <div class="flex justify-between mt-7 mb-20">
                     <p id="cancel" class="text-black border-2 border-black bg-white rounded-full px-2 hover:bg-red-400 hover:text-white duration-300 cursor-pointer">Cancel</p>

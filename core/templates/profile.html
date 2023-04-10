@@ -7,14 +7,13 @@
     </div>
     <div class="flex justify-center bg-white dark:bg-black max-w-6xl mx-auto overflow-y-hidden">
         <div class="border-l-2 border-gray-300 dark:border-gray-600 px-2 pt-10 w-full">
-            <div class="flex justify-between mb-3">
+            <div class="flex justify-between mb-3 md:mb-6">
                 <span>
-                    <p class="font-semibold uppercase text-xl dark:text-white text-gray-900">{{user_profile.name_last}}&nbsp;&nbsp;{{user_profile.name_first}}</p>
                     <p class="dark:text-gray-300 text-center text-gray-700">@{{user_profile.user.username}}</p>   
                 </span>
                 <span>
                 {%if user_profile.user.username == request.user.username%}
-                    <a href="{%url 'settings'%}" class="text-white items-center px-2 border-2 py-1 lg:py-2 text-sm lg:text-lg rounded-full bg-blue-600 hover:bg-blue-600 duration-500">Edit Profile</a>
+                    <a href="{%url 'settings'%}" class="text-white items-center px-2 border-2 py-1 lg:py-2 text-sm lg:text-base rounded-full bg-blue-600 hover:bg-blue-600 duration-500">Edit Profile</a>
                 {%else%}
                     <!--<a href="/follow?username={{user_profile.user.username}}">
                         {%if is_following%}
@@ -42,13 +41,13 @@
                 </span> 
                 {%if user_object.username == request.user.username%}
                 <span>
-                    <a href="/delete_account" class="text-white text-center px-2 border-2 text-sm lg:text-lg py-1 lg:py-2 rounded-full bg-red-600 hover:bg-red-500 duration-500" id="delete_account">Delete Account</a>
+                    <a href="/delete_account" class="text-white text-center px-2 border-2 text-sm lg:text-base py-1 lg:py-2 rounded-full bg-red-600 hover:bg-red-500 duration-500" id="delete_account">Delete Account</a>
                 </span>    
                 {%endif%}   
             </div>
             <div>
                 <a href="{{user_profile.background_profile_pics.url}}">
-                    <img src="{{user_profile.background_profile_pics.url}}" class="rounded-lg object-cover w-full" alt="Background Image">
+                    <img src="{{user_profile.background_profile_pics.url}}" class="rounded-lg h-36 md:h-64 w-full object-cover" alt="Background Image">
                 </a>
                 <div class="text-black font-semibold text-sm -mt-12 justify-between bg-white p-2 rounded-md absolute">
                     <span class="md:pl-4 text-gray-500 hover:text-black">{{user_post_length}} 
@@ -75,19 +74,20 @@
                 </div>
             </div>
             <div class ="flex justify-end -mt-16">
-                <div>
+                <div class="items-end">
                     <a href="{{user_profile.profile_pics.url}}">
                         <img src="{{user_profile.profile_pics.url}}" class="profile_img mr-3 w-20 h-20 border-2 border-gray-300" alt="Profile Image">
-                    </a>
+                    </a>   
                 </div>   
             </div>  
+            <p class="font-semibold uppercase lg:text-xl dark:text-white text-gray-900 flex justify-end">{{user_profile.name_last}}&nbsp;&nbsp;{{user_profile.name_first}}</p>
             <div class="border-y-2 border-gray-300 dark:border-gray-600 mb-5 mt-10">
                 <p class="font-semibold dark:text-gray-300 text-gray-500 flex justify-center mt-10 text-xl">BIO</p>
                 <p class="text-black dark:text-white rounded-lg  break-all my-5 p-3 text-center"> 
                     {{user_profile.bio}}
                 </p>
                 <span><i class="mt-8 fa-solid fa-location-dot mb-2 text-blue-600"></i></span>
-                <span class="text-gray-800 mb-2 w-20 font-semibold align-text-bottom mt-3 py-1 px-3 h-10 dark:text-gray-300">{{user_profile.country}}, {{user_profile.city}}
+                <span class="text-gray-800 mb-2 w-20 font-semibold align-text-bottom mt-3 py-1 px-3 h-10 dark:text-gray-300">{{user_profile.country}} {{user_profile.city}}
                 </span>
             </div> 
             {%if user_profile.user.username == request.user.username%} 
