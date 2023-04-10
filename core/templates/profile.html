@@ -5,7 +5,7 @@
     <div class="text-gray-100 flex justify-center mx-auto pb-4 sticky top-0 bg-white dark:bg-black z-10">
         {%include 'partials/navbar2.html'%}
     </div>
-    <div class="flex justify-center bg-white dark:bg-black max-w-6xl mx-auto overflow-y-hidden">
+    <div class="flex flex-col justify-center bg-white dark:bg-black max-w-6xl mx-auto overflow-y-hidden">
         <div class="border-l-2 border-gray-300 dark:border-gray-600 px-2 pt-10 w-full">
             <div class="flex justify-between mb-3 md:mb-6">
                 <span>
@@ -38,12 +38,7 @@
                         {%endif%}
                     </button>
                 {%endif%}
-                </span> 
-                {%if user_object.username == request.user.username%}
-                <span>
-                    <a href="/delete_account" class="text-white text-center px-2 border-2 text-sm lg:text-base py-1 lg:py-2 rounded-full bg-red-600 hover:bg-red-500 duration-500" id="delete_account">Delete Account</a>
-                </span>    
-                {%endif%}   
+                </span>   
             </div>
             <div>
                 <a href="{{user_profile.background_profile_pics.url}}">
@@ -123,12 +118,12 @@
                     <a href="{{post.post_file.url}}">
                         {%if '.mp4' in post.post_file.url%}
                         <div class="flex justify-center bg-white dark:bg-gray-800">
-                            <video controls src="{{post.post_file.url}}" class="cursor-zoom-in h-64 object-scale-down"></video>
+                            <video controls src="{{post.post_file.url}}" class="h-64 object-scale-down"></video>
                         </div>
                             
                         {%else%}
                         <div class="flex justify-center bg-white dark:bg-gray-800">
-                            <img src="{{post.post_file.url}}" class="cursor-zoom-in h-64 object-scale-down" alt="Post Image">
+                            <img src="{{post.post_file.url}}" class="h-64 object-scale-down" alt="Post Image">
                         </div>    
                         {%endif%}
                     </a>
@@ -150,8 +145,15 @@
                 </div>
             {%endfor%}
             </div>
+            {%if user_object.username == request.user.username%}
+                
+            <p class="flex text-center justify-center mb-4 mt-60"><a href="/delete_account" class="text-white px-2 border-2 text-sm lg:text-base py-1 lg:py-2 rounded-full bg-red-500" id="delete_account">Delete Account</a></p> 
+                    
+            {%endif%}
         </div>  
+        
     </div>
+     
     {%include 'partials/footnote.html'%}
 </div>
 <script type="text/javascript">

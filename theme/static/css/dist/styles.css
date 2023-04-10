@@ -916,6 +916,10 @@ select {
   margin-top: 10rem;
 }
 
+.mt-60 {
+  margin-top: 15rem;
+}
+
 .block {
   display: block;
 }
