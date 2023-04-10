@@ -26,10 +26,10 @@
                 </form>    
             </div>
             {%if posts%}
-                <div id="post_id" class="mt-10">
+                <div id="post_id" class="mt-10 space-y-3">
                     {%for post in posts reversed%}
-                    <div class="border-t-2 border-gray-300 dark:border-gray-600">
-                        <div class="postdiv mb-10 mt-10 overflow-hidden bg-gray-100 dark:bg-gray-900 rounded-md">
+                    <div class="border-t-2 border-gray-200 dark:border-gray-600">
+                        <div class="postdiv mb-10 mt-10 overflow-hidden bg-gray-100 dark:bg-gray-900 rounded-md border-2 border-gray-100 dark:border-gray-800">
                             <div class="flex justify-between mb-3">
                                 <a href="{% url 'profile' username=post.user %}">
                                     <p class="p-3 font-semibold cursor-pointer text-black hover:underline dark:text-gray-200">@{{post.user}}</p>
@@ -62,10 +62,12 @@
                                 {%if post.post_file%}
                                     <a href="{{post.post_file.url}}">
                                         {%if '.mp4' in post.post_file.url%}
+                                        <div class="">
                                             <video controls src="{{post.post_file.url}}" class="cursor-pointer"></video>
+                                        </div>  
                                         {%else%}
-                                            <div class="flex justify-center">
-                                                <img src="{{post.post_file.url}}" class="cursor-pointer" alt="Post Image">
+                                            <div class="flex justify-center bg-white dark:bg-gray-800">
+                                                <img src="{{post.post_file.url}}" class="cursor-pointer h-64 object-scale-down" alt="Post Image">
                                             </div>
                                         {%endif%}
                                     </a>
@@ -91,6 +93,7 @@
                                     <button class="like">
                                    
                                         {%if post.likes.count >= 1%}
+                                       
                                         <i class="like_button text-2xl text-blue-500 fa-solid fa-heart cursor-pointer dark:text-blue-500" name="post_id" id="post_id"></i>
                                         {%else%}
                                         <i class="like_button text-2xl fa-regular fa-heart cursor-pointer dark:text-gray-300" name="post_id" id="post_id"></i>
@@ -133,6 +136,7 @@
             <div>
                 <p class="dark:text-gray-200 text-gray-900 px-2 py-4 font-semibold border-t-2 border-gray-200 mt-5 dark:border-gray-700">Suggested For You</p>
                 {%for other_profile in other_profiles%}
+
                     <div class="other_profiles flex justify-between bg-gray-100 dark:bg-gray-900  m-7 p-4 rounded-md">
                         <a href="{% url 'profile' username=other_profile.user.username %}">
                             <div>
@@ -159,6 +163,7 @@
     </section>   
     {%include 'partials/footnote.html'%}
 </div>
+
 <script type="text/javascript">
     
 function getCookie(name) {
@@ -206,6 +211,8 @@ for(i=0;i<posts_ids.length;i++){
     like_btn[i].addEventListener('click',()=>{
         let data = {id:posts_ids[i]}
         console.log(total_posts)
+        console.log(js_posts)
+        console.log(posts_ids)
         fetch( url, {
             method: "POST",
             headers: {"Content-Type":"application/json",
@@ -287,6 +294,7 @@ for(i=0;i<other_profiles.length;i++){
                 option[i].classList.remove("bg-blue-500","hover:bg-blue-600")
                 option[i].classList.add("bg-red-400","hover:bg-red-500")
                 option[i].innerHTML = "Unfollow"
+                
             }
             else if (data['checker']==0){
                 option[i].classList.remove("bg-red-400","hover:bg-red-500")

@@ -2,25 +2,31 @@
 {%load static%}
 
 {%block content%}
-<div class="dark:bg-black bg-white flex flex-col justify-center items-center overflow-hidden py-4">
-    <p id="sun" class="text-2xl p-4 cursor-pointer rounded-full dark:text-white"><i class="fa-solid fa-sun"></i></p>
-    <p id="moon" class="text-2xl p-4 rounded-full cursor-pointer"><i class="fa-solid fa-moon"></i></p>
-    <p class="dark:text-white text-gray-600 text-2xl text-center font-semibold px-2 py-10">Welcome to <span class="text-blue-600 italic">Social Book</span> &nbsp;<i class="fa-solid fa-users text-blue-600 p-4 dark:bg-white bg-gray-200 rounded-full"></i>
-    <div class="border-2 border-blue-200 rounded-lg p-12 mb-20">
-        <p class="text-blue-500 font-bold text-2xl text-center mb-4">LOGIN</p>
-        {%for message in messages%}
-            <span class="text-red-400">{{message}}</span>
-        {%endfor%}
-        <p class="dark:text-white text-gray-600">Don't have an account?
-            <a href="{%url 'signup'%}" class="text-blue-600 hover:text-blue-500 dark:text-blue-500 dark:hover:text-blue-400 font-semibold">Sign Up</a>
-        </p>
-        <form action="" method="POST" class="pt-6">{%csrf_token%}
-            <p class="pb-2"><input class="px-2 border-2 border-gray-300 rounded-md" required type="text" placeholder="Username" name="username"></p>   
-            <p class="pb-6"><input class="px-2 border-2 border-gray-300 rounded-md" required type="password" placeholder="Password" name="password"></p>   
-            <p class="pb-2"><input class="text-blue-600 bg-white px-2 cursor-pointer hover:bg-blue-500 duration-300 hover:text-white border-2 border-gray-300 rounded-md" type="submit" value="login"></p>
-        </form>
-        <div class="pt-3">
-            <a class="text-blue-500 hover:underline" href="{%url 'password_reset'%}">Forgot Password?</a>
+<div class="dark:bg-black bg-white">
+    <div class="flex flex-col justify-center overflow-hidden h-screen">
+        <span id="sun" class="text-2xl flex justify-center p-4 cursor-pointer rounded-full dark:text-white"><i class="fa-solid fa-sun"></i></span>
+        <span id="moon" class="text-2xl flex justify-center p-4 rounded-full cursor-pointer"><i class="fa-solid fa-moon"></i></span>
+        <p class="dark:text-white text-gray-600 text-2xl text-center font-semibold px-2 py-10">Welcome to <span class="text-blue-600 italic">Social Book</span> &nbsp;<i class="fa-solid fa-users text-blue-600 p-4 dark:bg-white bg-gray-200 rounded-full"></i>
+        <div class="flex justify-center">
+            <div class="border-2 border-blue-200 rounded-lg p-12 mb-20">
+                <p class="text-blue-500 font-bold text-2xl text-center mb-4">LOGIN</p>
+                {%for message in messages%}
+                {%if message%}
+                    <span class="text-red-400">{{message}}</span>
+                {%endif%}
+                {%endfor%}
+                <p class="dark:text-white text-gray-600">Don't have an account?
+                    <a href="{%url 'signup'%}" class="text-blue-600 hover:text-blue-500 dark:text-blue-500 dark:hover:text-blue-400 font-semibold">Sign Up</a>
+                </p>
+                <form action="" method="POST" class="pt-6">{%csrf_token%}
+                    <p class="pb-2"><input class="px-2 border-2 border-gray-300 rounded-md" required type="text" placeholder="Username" name="username"></p>   
+                    <p class="pb-6"><input class="px-2 border-2 border-gray-300 rounded-md" required type="password" placeholder="Password" name="password"></p>   
+                    <p class="pb-2"><input class="text-blue-600 bg-white px-2 cursor-pointer hover:bg-blue-500 duration-300 hover:text-white border-2 border-gray-300 rounded-md" type="submit" value="login"></p>
+                </form>
+                <div class="pt-3">
+                    <a class="text-blue-500 hover:underline" href="{%url 'password_reset'%}">Forgot Password?</a>
+                </div>    
+            </div>
         </div>    
     </div>
     {%include 'partials/footnote.html'%}

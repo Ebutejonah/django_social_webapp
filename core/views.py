@@ -41,7 +41,7 @@ def indexView(request):
     final_suggestion_list = [x for x in list(new_suggestion_list) if (x not in list(logged_in_user))]
     random.shuffle(final_suggestion_list)
 
-    #getting the Profile object from the User instance
+    #getting the Profile object from the User instance above
     suggested_profile_lists = []
     for users in final_suggestion_list:
         profiles = Profile.objects.filter(user = users)
@@ -74,11 +74,13 @@ def indexView(request):
     for profile in user_following:
         following_post = Post.objects.filter(user = profile.following)
         others_posts.append(following_post)
+    
     all_others_posts = others_posts
     user_posts.append(post)
     all_following_posts=list(chain(*all_others_posts))
     user_post=list(chain(*user_posts))
     joined_posts = all_following_posts + user_post
+    print(joined_posts)
     all_posts = Post.objects.all()
     liked_list = []
     for each_post in all_posts:
@@ -91,10 +93,12 @@ def indexView(request):
     for profile_json in user_following:
         following_json = list(Post.objects.filter(user=profile_json.following).values())
         other_posts_json.append(following_json)
+    
     all_following_json=list(chain(*other_posts_json))
     #user's post
     post_json = list(Post.objects.filter(user=request.user.username).values())
     joined = all_following_json + post_json
+    print(joined)
 
     if request.method == 'POST':
         if request.FILES.get('postimage') != None and request.POST['caption'] == None:
@@ -144,10 +148,10 @@ def signUpView(request):
                 messages.info(request,'Your Password Must Be At Least 8 Characters')
                 return redirect('/signup')
             elif User.objects.filter(username=usersname).exists():
-                messages.info(request,'Invalid credentials. Please fill form again.')
+                messages.info(request,'This Username is not available. Please try again')
                 return redirect('/signup')
             elif User.objects.filter(email=email).exists():
-                messages.info(request,'Invalid credentials. Please fill form again.')
+                messages.info(request,'An account with this email already exists. Please Log In.')
                 return redirect('/signup')
             else:
                 user=User.objects.create_user(username=usersname,email=email,password=password,first_name=first_name,last_name=last_name)
@@ -197,6 +201,24 @@ def loginView(request):
 def logoutView(request):
     auth.logout(request)
     return redirect('/login')
+
+@login_required()
+def delete_accountview(request):
+    username = request.user.username
+    user = User.objects.filter(username = username).first()
+    context = {'user':user}
+    return render(request,'delete_account.html',context)
+
+@login_required()
+def confirm_delete_accountview(request):
+    user_id = request.GET.get('user_id')
+    user = User.objects.filter(id = user_id).first()
+    profile = Profile.objects.filter(user = user).first()
+    user.delete()
+    profile.delete()
+    return redirect('/signup')
+   
+        
 
 
 @login_required()
@@ -250,11 +272,8 @@ def account_settings(request):
         if request.POST['country'] != None and request.POST['bio'] == None:
             profile_pics = user_profile.profile_pics
             background_profile_pics = user_profile.background_profile_pics
-            bio = request.POST['bio']
-            country = request.POST.get('country')
-            city = request.POST.get('city')
+            country = request.POST['country']
             user_profile.country = country
-            user_profile.city = city
             user_profile.profile_pics = profile_pics
             user_profile.background_profile_pics = background_profile_pics
             user_profile.bio = bio
@@ -264,20 +283,16 @@ def account_settings(request):
             profile_pics = user_profile.profile_pics
             background_profile_pics = user_profile.background_profile_pics
             bio = request.POST['bio']
-            country = user_profile.country
+            country =request.POST['country']
             user_profile.country = country
-            city = user_profile.city
-            user_profile.city= city
             user_profile.profile_pics = profile_pics
             user_profile.background_profile_pics = background_profile_pics
             user_profile.bio = bio
             user_profile.save()
             return redirect('/profile/'+username)
-        if request.POST['bio'] == None and request.POST['country'] == "":
+        if request.POST['bio'] == None and request.POST['city'] == "":
             bio = request.POST['bio']
-            country = user_profile.country
-            user_profile.country = country
-            city = user_profile.city
+            city = request.POST['city']
             user_profile.city = city
             profile_pics = user_profile.profile_pics
             background_profile_pics = user_profile.background_profile_pics
@@ -286,12 +301,10 @@ def account_settings(request):
             user_profile.bio = bio
             user_profile.save()
             return redirect('/profile/'+username)
-        if request.POST['bio'] =="" and request.POST['country'] == "":
+        if request.POST['bio']  and request.POST['country'] == None:
             bio = request.POST['bio']
             country = user_profile.country
             user_profile.country = country
-            city = user_profile.city
-            user_profile.city = city
             profile_pics = user_profile.profile_pics
             background_profile_pics = user_profile.background_profile_pics
             user_profile.bio = bio
@@ -299,11 +312,19 @@ def account_settings(request):
             user_profile.background_profile_pics = background_profile_pics
             user_profile.save()
             return redirect('/profile/'+username)
-        if request.POST['country'] != None and request.POST['city'] == "":
+        if request.POST['country'] != None and request.POST['city'] == None:
             country = request.POST.get('country')
             user_profile.country = country
-            city = request.POST.get('city')
+            city = user_profile.city
             user_profile.city = city
+            bio = request.POST['bio']
+            profile_pics = user_profile.profile_pics
+            background_profile_pics = user_profile.background_profile_pics
+            user_profile.bio = bio
+            user_profile.profile_pics = profile_pics
+            user_profile.background_profile_pics = background_profile_pics
+            user_profile.save()
+        if request.POST['country'] and request.POST['city'] == None:
             bio = request.POST['bio']
             profile_pics = user_profile.profile_pics
             background_profile_pics = user_profile.background_profile_pics
@@ -316,6 +337,19 @@ def account_settings(request):
             country = request.POST.get('country')
             user_profile.country = country
             city = request.POST.get('city')
+            user_profile.city = city
+            bio = request.POST['bio']
+            profile_pics = user_profile.profile_pics
+            background_profile_pics = user_profile.background_profile_pics
+            user_profile.bio = bio
+            user_profile.profile_pics = profile_pics
+            user_profile.background_profile_pics = background_profile_pics
+            user_profile.save()
+            return redirect('/profile/'+username)
+        if request.POST['country'] and request.POST['city'] == "":
+            country = request.POST['country']
+            user_profile.country = country
+            city = request.POST['city']
             user_profile.city = city
             bio = request.POST['bio']
             profile_pics = user_profile.profile_pics
@@ -535,6 +569,38 @@ def followView(request):
 @login_required()
 def followView(request):
     if request.method == 'POST':
+
+
+
+        '''#getting all the users on the platform
+        all_users = User.objects.all()
+
+        #user_object of all those the logged in user is following
+        user_following = Follow.objects.filter(user=request.user.username)
+        user_following_all = []
+        for user_object_following in user_following:
+            user_followed = User.objects.filter(username = user_object_following.following)
+            user_following_all.append(user_followed)
+
+        #User object of all accounts the logged in user is not following
+        new_suggestion_list = [x for x in list(all_users) if (x not in list(user_following_all))]
+
+        logged_in_user = User.objects.filter(username = request.user.username)
+
+        #User object of all accounts the logged in user is not following including the logged in user's
+        final_suggestion_list = [x for x in list(new_suggestion_list) if (x not in list(logged_in_user))]
+        random.shuffle(final_suggestion_list)
+
+        #getting the Profile object from the User instance above
+        suggested_profile_lists = []
+        for users in final_suggestion_list:
+            profiles = Profile.objects.filter(user = users)
+            suggested_profile_lists.append(profiles)
+        suggestion = list(chain(*suggested_profile_lists))'''
+
+
+
+
         username = request.user.username
         user_object = User.objects.get(username = username)
         user_profile = Profile.objects.get(user=user_object)
@@ -553,6 +619,7 @@ def followView(request):
         else:
             followed.delete()
             checker = 0
+        
         user_followers = Follow.objects.filter(following = other_username)
         followers = len(user_followers)
         context = {'checker':checker,'num_of_followers':followers}

@@ -7,39 +7,44 @@
     </div>
     <div class="flex justify-center bg-white dark:bg-black max-w-6xl mx-auto overflow-y-hidden">
         <div class="border-l-2 border-gray-300 dark:border-gray-600 px-2 pt-10 w-full">
-            <div class="flex justify-between pb-3">
+            <div class="flex justify-between mb-3">
                 <span>
                     <p class="font-semibold uppercase text-xl dark:text-white text-gray-900">{{user_profile.name_last}}&nbsp;&nbsp;{{user_profile.name_first}}</p>
                     <p class="dark:text-gray-300 text-center text-gray-700">@{{user_profile.user.username}}</p>   
                 </span>
                 <span>
-                    {%if user_profile.user.username == request.user.username%}
-                        <a href="{%url 'settings'%}" class="text-white items-center px-2 border-2 py-1 rounded-full bg-blue-600 hover:bg-blue-600 duration-500">Edit Profile</a>
-                    {%else%}
-                        <!--<a href="/follow?username={{user_profile.user.username}}">
-                            {%if is_following%}
-                                <p class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-red-400 hover:bg-red-500 duration-500">
-                                    Unfollow
-                                </p>
-                            {%else%}
-                                <p class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-blue-500 hover:bg-blue-600 duration-500">
-                                    Follow
-                                </p>
-                            {%endif%}
-                        </a>-->
-                        <button class="follow_button" id="follow_button">
-                            {%if is_following%}
-                                <p id="follow" class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-red-400 hover:bg-red-500 duration-500">
-                                    Unfollow
-                                </p>
-                            {%else%}
-                                <p id="unfollow" class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-blue-500 hover:bg-blue-600 duration-500">
-                                    Follow
-                                </p>
-                            {%endif%}
-                        </button>
-                    {%endif%}
+                {%if user_profile.user.username == request.user.username%}
+                    <a href="{%url 'settings'%}" class="text-white items-center px-2 border-2 py-1 lg:py-2 text-sm lg:text-lg rounded-full bg-blue-600 hover:bg-blue-600 duration-500">Edit Profile</a>
+                {%else%}
+                    <!--<a href="/follow?username={{user_profile.user.username}}">
+                        {%if is_following%}
+                            <p class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-red-400 hover:bg-red-500 duration-500">
+                                Unfollow
+                            </p>
+                        {%else%}
+                            <p class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-blue-500 hover:bg-blue-600 duration-500">
+                                Follow
+                            </p>
+                        {%endif%}
+                    </a>-->
+                    <button class="follow_button" id="follow_button">
+                        {%if is_following%}
+                            <p id="follow" class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-red-400 hover:bg-red-500 duration-500">
+                                Unfollow
+                            </p>
+                        {%else%}
+                            <p id="unfollow" class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-blue-500 hover:bg-blue-600 duration-500">
+                                Follow
+                            </p>
+                        {%endif%}
+                    </button>
+                {%endif%}
+                </span> 
+                {%if user_object.username == request.user.username%}
+                <span>
+                    <a href="/delete_account" class="text-white text-center px-2 border-2 text-sm lg:text-lg py-1 lg:py-2 rounded-full bg-red-600 hover:bg-red-500 duration-500" id="delete_account">Delete Account</a>
                 </span>    
+                {%endif%}   
             </div>
             <div>
                 <a href="{{user_profile.background_profile_pics.url}}">
@@ -98,8 +103,9 @@
                     <p class="font-bold mt-20 flex justify-center text-gray-600 mb-40 dark:text-gray-300">@{{user_profile.user.username}} has no post</p>
                 {%endif%}
             {%endif%}
+            <div class="grid lg:grid-cols-3 sm:grid-cols-2 gap-x-2 gap-y-2 my-10">
             {%for post in post reversed%}
-                <div class="postdiv mb-10 mt-10 overflow-hidden bg-gray-100 dark:bg-gray-900 rounded-md" id="">
+                <div class="postdiv overflow-hidden bg-gray-100 dark:bg-gray-900 rounded-md border-2 border-gray-100 dark:border-gray-800">
                     <div class="flex justify-between mb-3">
                         <p class="p-3 font-semibold cursor-pointer hover:underline dark:text-gray-200">@{{user_profile.user.username}}</p>
                         <div class="block mr-5">
@@ -111,17 +117,23 @@
                             </div>
                         </div>    
                     </div>
+                    
                     {%if post.post_file%}
-                        <a href="{{post.post_file.url}}">
-                            {%if '.mp4' in post.post_file.url%}
-                                <video controls src="{{post.post_file.url}}" class="cursor-zoom-in"></video>
-                            {%else%}
-                            <div class="flex justify-center">
-                                <img src="{{post.post_file.url}}" class="cursor-zoom-in" alt="Post Image">
-                            </div>    
-                            {%endif%}
-                        </a>
+                    
+                    <a href="{{post.post_file.url}}">
+                        {%if '.mp4' in post.post_file.url%}
+                        <div class="flex justify-center bg-white dark:bg-gray-800">
+                            <video controls src="{{post.post_file.url}}" class="cursor-zoom-in h-64 object-scale-down"></video>
+                        </div>
+                            
+                        {%else%}
+                        <div class="flex justify-center bg-white dark:bg-gray-800">
+                            <img src="{{post.post_file.url}}" class="cursor-zoom-in h-64 object-scale-down" alt="Post Image">
+                        </div>    
+                        {%endif%}
+                    </a>
                     {%endif%}
+                    
                     <div class="p-4">
                         <p class="dark:text-gray-200">{{post.caption}}</p>
                         <p class="dark:text-gray-200">{{post.likes.count}} 
@@ -137,11 +149,14 @@
                     </div>
                 </div>
             {%endfor%}
+            </div>
         </div>  
     </div>
     {%include 'partials/footnote.html'%}
 </div>
 <script type="text/javascript">
+    //pop up confirmation to delete account
+
     //toggle functionality for light/dark modes
     const sunIcon = document.getElementById('sun')
     const moonIcon = document.getElementById('moon')

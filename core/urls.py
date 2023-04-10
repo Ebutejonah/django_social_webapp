@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import likeView,CommentView, FollowersView, FollowingView, SearchedUserView, deletePost, indexView, followView, logoutView, signUpView, loginView,account_settings,ProfileView, SearchView
+from .views import likeView,CommentView, delete_accountview, confirm_delete_accountview, FollowersView, FollowingView, SearchedUserView, deletePost, indexView, followView, logoutView, signUpView, loginView,account_settings,ProfileView, SearchView
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 
@@ -19,6 +19,8 @@ urlpatterns = [
     path('comments/<str:post_id>/', CommentView, name = 'comments'),
     path('delete-post',deletePost,name='delete-post'),
     path('json',indexView,name='json'),
+    path('delete_account', delete_accountview,name="delete_account"),
+    path('confirm_delete_account',confirm_delete_accountview,name="confirm_delete_account"),
 
     path('password_change/', auth_views.PasswordChangeView.as_view(template_name = 'registration/password_change.html'), 
         name='password_change'),
