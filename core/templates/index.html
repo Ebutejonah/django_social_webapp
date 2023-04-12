@@ -136,7 +136,7 @@
             <div>
                 <p class="dark:text-gray-200 text-gray-900 px-2 py-4 font-semibold border-t-2 border-gray-200 mt-5 dark:border-gray-700">Suggested For You</p>
                 {%for other_profile in other_profiles%}
-
+                    
                     <div class="other_profiles flex justify-between bg-gray-100 dark:bg-gray-900  m-7 p-4 rounded-md">
                         <a href="{% url 'profile' username=other_profile.user.username %}">
                             <div>
@@ -150,13 +150,22 @@
                                     View Profile
                                 </p>
                             </a>-->
+                            
+                            <p class="followed dark:text-gray-300"></p>
+                         
+                            
+                            
+                            
                             <button class="follow_btn">
                                 <p class="follow bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
                                     Follow
                                 </p>
                             </button>
+                            
+                            
                         </span>
-                    </div>    
+                    </div> 
+                       
                 {%endfor%}
             </div>    
         </div>
@@ -255,6 +264,7 @@ likePost(i)
 
 let other_profiles = document.getElementsByClassName('other_profiles')
 let option = document.getElementsByClassName('follow')
+let followed = document.getElementsByClassName('followed')
 const follow_btn = document.getElementsByClassName('follow_btn')
 let profiles_usernames = []
 let profiles = "{{suggest}}"
@@ -291,10 +301,9 @@ for(i=0;i<other_profiles.length;i++){
             .then(function(data){
             console.log(data)
             if (data['checker']==1){
-                option[i].classList.remove("bg-blue-500","hover:bg-blue-600")
-                option[i].classList.add("bg-red-400","hover:bg-red-500")
-                option[i].innerHTML = "Unfollow"
-                
+                follow_btn[i].classList.add('hidden')
+                followed[i].innerHTML = "Following"
+                    
             }
             else if (data['checker']==0){
                 option[i].classList.remove("bg-red-400","hover:bg-red-500")

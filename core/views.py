@@ -41,13 +41,25 @@ def indexView(request):
     final_suggestion_list = [x for x in list(new_suggestion_list) if (x not in list(logged_in_user))]
     random.shuffle(final_suggestion_list)
 
+    #User object of accounts the logged in user is following:
+    '''following = [x for x in list(all_users) if (x not in list(final_suggestion_list))]
+    if following:
+        msg = True
+    else:
+        msg = False'''
+
+
     #getting the Profile object from the User instance above
     suggested_profile_lists = []
     for users in final_suggestion_list:
         profiles = Profile.objects.filter(user = users)
         suggested_profile_lists.append(profiles)
     suggestion = list(chain(*suggested_profile_lists))
-
+    for suggested in suggested_profile_lists:
+        if suggested:
+            msg=True
+        else:
+            msg=False
     ##getting users logged in user is not following json format
     #user_object_json of all those the logged in user is following
     user_followings_json = []
@@ -125,6 +137,8 @@ def indexView(request):
                 'user_profile':user_profile,
                 'other_profiles':suggestion[:4],
                 'user_object':user_object,
+                'msg':msg,
+                
             }
     return render(request,'index.html',context)
 
@@ -606,6 +620,7 @@ def followView(request):
         user_profile = Profile.objects.get(user=user_object)
         data = json.loads(request.body)
         other_username = data['username']
+        print(other_username)
         following_object = User.objects.get(username = other_username)
         following_profile = Profile.objects.get(user=following_object)
         followed = Follow.objects.filter(following = other_username, user=username).first()
@@ -619,7 +634,6 @@ def followView(request):
         else:
             followed.delete()
             checker = 0
-        
         user_followers = Follow.objects.filter(following = other_username)
         followers = len(user_followers)
         context = {'checker':checker,'num_of_followers':followers}
