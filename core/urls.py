@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import likeView,CommentView, delete_accountview, confirm_delete_accountview, FollowersView, FollowingView, SearchedUserView, deletePost, indexView, followView, logoutView, signUpView, loginView,account_settings,ProfileView, SearchView
+from .views import likeView,CommentView, delete_accountview, confirm_delete_accountview, FollowersView
+from .views import FollowingView, SearchedUserView, deletePost, indexView, followView, logoutView, signUpView, loginView,account_settings,ProfileView, SearchView
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 

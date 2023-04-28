@@ -18,7 +18,7 @@
             <div class="mr-0 rounded-md px-2 pt-6">
                 <form action="" id="post_button" method="POST" enctype="multipart/form-data" class="post_form">{%csrf_token%}
                     <textarea id="caption" type="text" autocomplete="off" class="resize-none mt-2 w-full h-36 border-2 pl-2 rounded-md" name="caption" placeholder="What's on your mind?"></textarea>
-                    <input id="postimage" type="file" class="cursor-pointer text-black bg-gray-100 rounded-md font-normal" name="postimage">
+                    <input id="postimage" type="file" accept=".jpeg, .jpg, .mp4, .mkv, .png, .gif" class="cursor-pointer text-black bg-gray-100 rounded-md font-normal" name="postimage">
                     <div class="flex justify-between mt-5">
                         <p id="cancelbutton" class="text-black border-2 border-gray-500 rounded-full px-2 bg-gray-100 cursor-pointer hover:bg-red-400 duration-300 hover:text-white">Cancel</p>
                         <input disabled id="post" type="submit" class="rounded-full border-2 cursor-pointer border-gray-500 px-2 text-black bg-gray-100" value="Post">   
@@ -62,6 +62,10 @@
                                 {%if post.post_file%}
                                     <a href="{{post.post_file.url}}">
                                         {%if '.mp4' in post.post_file.url%}
+                                        <div class="">
+                                            <video controls src="{{post.post_file.url}}" class="cursor-pointer"></video>
+                                        </div>  
+                                        {%elif '.mkv' in post.post_file.url%}
                                         <div class="">
                                             <video controls src="{{post.post_file.url}}" class="cursor-pointer"></video>
                                         </div>  

@@ -4,7 +4,7 @@ from .models import Post, Profile
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        exclude = ('id_user',)
+        fields = ['profile_pics','background_profile_pics','bio','country','city']
 
 class PostForm(forms.ModelForm):
     class Meta:

@@ -3,7 +3,10 @@ from django.contrib.auth import get_user_model
 import uuid
 from datetime import datetime
 
+
+
 User = get_user_model()
+
 
 class Profile(models.Model):
     username = models.CharField(blank=True,null=True,max_length=30)
@@ -11,8 +14,8 @@ class Profile(models.Model):
     name_first = models.CharField(max_length=50,null=True)
     name_last = models.CharField(max_length=50,null=True)
     id_user = models.IntegerField()
-    profile_pics=models.ImageField(upload_to='profile_pics', default = 'profile_pics/defaultimage2.jpg')
-    background_profile_pics=models.ImageField(upload_to='bg_profile_pics', default = 'bg_profile_pics/defaultimage.jpg')
+    profile_pics=models.ImageField(null=True,blank=True,upload_to='profile_pics', default = 'profile_pics/defaultimage2.jpg')
+    background_profile_pics=models.ImageField(null=True,blank=True,upload_to='bg_profile_pics', default = 'bg_profile_pics/defaultimage.jpg')
     country = models.CharField(max_length=40,null=True,blank=True,default="")
     city = models.CharField(max_length=40,null=True,blank=True,default="")
     bio = models.TextField(blank = True, null = True,default="")

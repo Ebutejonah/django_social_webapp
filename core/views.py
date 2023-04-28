@@ -233,8 +233,6 @@ def confirm_delete_accountview(request):
     return redirect('/signup')
    
         
-
-
 @login_required()
 def account_settings(request):
     username = request.user.username
