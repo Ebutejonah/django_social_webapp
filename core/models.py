@@ -4,9 +4,7 @@ import uuid
 from datetime import datetime
 
 
-
 User = get_user_model()
-
 
 class Profile(models.Model):
     username = models.CharField(blank=True,null=True,max_length=30)
