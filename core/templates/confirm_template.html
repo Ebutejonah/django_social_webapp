@@ -1,0 +1,12 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block title%}Email confirmation{%endblock title%}
+
+{%block content%}
+    {% if success %}
+        <p>Dear {{ user.name_first }}, your account is confirmed!</p>
+        <p>You can go ahead and <a href="https://socialsbyjonah.social/login">Login</a></p>
+    {% else %}
+        Error, invalid token!
+    {% endif %}
+{%endblock%}

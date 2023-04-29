@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import likeView,CommentView, delete_accountview, confirm_delete_accountview, FollowersView
-from .views import FollowingView, SearchedUserView, deletePost, indexView, followView, logoutView, signUpView, loginView,account_settings,ProfileView, SearchView
+from .views import registeredview, FollowingView, SearchedUserView, deletePost, indexView, followView, logoutView, signUpView, loginView,account_settings,ProfileView, SearchView
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 
@@ -8,6 +8,7 @@ urlpatterns = [
     path('like-post/', likeView, name ='like-post'),
     path('', indexView, name ='home'),
     path('signup/',signUpView, name='signup'),
+    path('registered/', registeredview, name='registered'),
     path('login/',loginView, name='login'),
     path('settings/',account_settings,name='settings'),
     path('logout/',logoutView,name='logout'),

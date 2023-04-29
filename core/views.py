@@ -11,6 +11,7 @@ import json
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
+from django_email_verification import send_email
 
 
 @login_required()
@@ -169,14 +170,16 @@ def signUpView(request):
                 return redirect('/signup')
             else:
                 user=User.objects.create_user(username=usersname,email=email,password=password,first_name=first_name,last_name=last_name)
+                user.save(commit=False)
+                user.is_active = False
                 user.save()
-
+                send_email(user)
                 #creating a profile object once a user successfully signs in
                 user_model=User.objects.get(username=usersname)
                 profile_obj=Profile.objects.create(user=user_model,id_user=user_model.id,name_first=user_model.first_name,name_last=user_model.last_name,username=user_model.username,email=user_model.email)
                 profile_obj.save()
 
-                template = render_to_string('core/welcome.html',{'first_name':first_name,'last_name':last_name,'username':usersname})
+                '''template = render_to_string('core/welcome.html',{'first_name':first_name,'last_name':last_name,'username':usersname})
                 email_to_send=EmailMessage(
                     "Welcome to Social Book",
                     template,
@@ -184,13 +187,17 @@ def signUpView(request):
                     [email],    
                 )
                 email_to_send.fail_silently=False
-                email_to_send.send()
-                return redirect('/login')
+                email_to_send.send()'''
+                return redirect('/registered')
         else:
             messages.info(request,'Passwords must match')
             return redirect('/signup')   
     else:
         return render(request,'signup.html',context)
+
+
+def registeredview(request):
+    return render(request, 'registered.html')
 
 
 def loginView(request):

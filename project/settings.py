@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'django_browser_reload',
+    'django_email_verification',
     
 ]
 
@@ -189,6 +190,18 @@ else:
     EMAIL_USE_TLS = True
     #EMAIL_USE_SSL = False
 
+
+def verified_callback(user):
+    user.is_active = True
+
+EMAIL_VERIFIED_CALLBACK = verified_callback
+EMAIL_FROM_ADDRESS = config("EMAIL_HOST_USER")
+EMAIL_MAIL_SUBJECT = 'Confirm your email'
+EMAIL_MAIL_HTML = 'mail_body.html'
+EMAIL_MAIL_PLAIN = 'mail_body.txt'
+EMAIL_MAIL_TOKEN_LIFE = 3600
+EMAIL_MAIL_PAGE_TEMPLATE = 'confirm_template.html'
+EMAIL_PAGE_DOMAIN = 'https://socialsbyjonah.social'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
