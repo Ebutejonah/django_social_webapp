@@ -170,9 +170,7 @@ def signUpView(request):
                 return redirect('/signup')
             else:
                 user=User.objects.create_user(username=usersname,email=email,password=password,first_name=first_name,last_name=last_name)
-                user.save(commit=False)
                 user.is_active = False
-                user.save()
                 send_email(user)
                 #creating a profile object once a user successfully signs in
                 user_model=User.objects.get(username=usersname)
