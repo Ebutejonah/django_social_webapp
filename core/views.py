@@ -8,9 +8,9 @@ from itertools import chain
 from django.http import JsonResponse
 import random
 import json
-from django.core.mail import EmailMessage
-from django.conf import settings
-from django.template.loader import render_to_string
+#from django.core.mail import EmailMessage
+#from django.conf import settings
+#from django.template.loader import render_to_string
 from django_email_verification import send_email
 
 
@@ -48,7 +48,6 @@ def indexView(request):
         msg = True
     else:
         msg = False'''
-
 
     #getting the Profile object from the User instance above
     suggested_profile_lists = []
@@ -586,9 +585,6 @@ def followView(request):
 @login_required()
 def followView(request):
     if request.method == 'POST':
-
-
-
         '''#getting all the users on the platform
         all_users = User.objects.all()
 
@@ -614,10 +610,7 @@ def followView(request):
             profiles = Profile.objects.filter(user = users)
             suggested_profile_lists.append(profiles)
         suggestion = list(chain(*suggested_profile_lists))'''
-
-
-
-
+    
         username = request.user.username
         user_object = User.objects.get(username = username)
         user_profile = Profile.objects.get(user=user_object)
@@ -639,5 +632,5 @@ def followView(request):
             checker = 0
         user_followers = Follow.objects.filter(following = other_username)
         followers = len(user_followers)
-        context = {'checker':checker,'num_of_followers':followers}
+        context = {'checker':checker,'num_of_followers':followers,'followed':followed}
         return JsonResponse(context,safe=False)

@@ -26,7 +26,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','socialsbyjonah.social','www.socialsbyjonah.social','djangosocialwebapp-production-f41f.up.railway.app']
 
@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     'theme',
     'django_browser_reload',
     'django_email_verification',
+    #cloudinary apps
+    'cloudinary_storage',
+    'cloudinary',
     
 ]
 
@@ -95,13 +98,21 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default':{
     'ENGINE':'django.db.backends.postgresql',
-    'NAME': config('NAME'),
-    'USER':config('USER'),
-    'HOST': config('HOST'),
-    'PASSWORD': config('PASSWORD'),
-    'PORT': '5432',
+    'NAME': config('PGDATABASE'),
+    'USER':config('PGUSER'),
+    'HOST': config('PGHOST'),
+    'PASSWORD': config('PGPASSWORD'),
+    'PORT':config('PGPORT'),
     }
 }
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUD_NAME'),
+    'API_KEY': config('API_KEY'),
+    'API_SECRET': config('API_SECRET')
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.VideoMediaCloudinaryStorage'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -147,13 +158,13 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR/'media'
 
-AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+'''AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
 AWS_QUERYSTRING_AUTH = False
-AWS_S3_FILE_OVERWRITE = False
+AWS_S3_FILE_OVERWRITE = False'''
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 #django-tailwind config
 TAILWIND_APP_NAME = 'theme'
@@ -167,8 +178,6 @@ NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000','https://socialsbyjonah.social','https://www.socialsbyjonah.social','https://djangosocialwebapp-production-f41f.up.railway.app']
 
 
 #email settings
@@ -206,3 +215,5 @@ EMAIL_PAGE_DOMAIN = 'https://socialsbyjonah.social'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
 CRISPY_TEMPLATE_PACK = "tailwind"
+
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000','https://socialsbyjonah.social','https://www.socialsbyjonah.social','https://djangosocialwebapp-production-f41f.up.railway.app']

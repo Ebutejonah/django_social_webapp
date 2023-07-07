@@ -2,9 +2,19 @@ from django.db import models
 from django.contrib.auth import get_user_model
 import uuid
 from datetime import datetime
-
+from cloudinary_storage.storage import VideoMediaCloudinaryStorage, MediaCloudinaryStorage
+from django.core.files.storage import FileSystemStorage
 
 User = get_user_model()
+
+class CustomStorage(FileSystemStorage):
+    def get_valid_name(self, name):
+        if name:
+            if name.endswith(('.jpg','.jpeg','.png','.gif')):
+                return 'images/'+ name
+            elif name.endswith(('.avi','.mp4','.mov')):
+                return 'videos/'+ name
+        return super().get_valid_name(name)
 
 class Profile(models.Model):
     username = models.CharField(blank=True,null=True,max_length=30)
@@ -12,14 +22,15 @@ class Profile(models.Model):
     name_first = models.CharField(max_length=50,null=True)
     name_last = models.CharField(max_length=50,null=True)
     id_user = models.IntegerField()
-    profile_pics=models.ImageField(null=True,blank=True,upload_to='profile_pics', default = 'profile_pics/defaultimage2.jpg')
-    background_profile_pics=models.ImageField(null=True,blank=True,upload_to='bg_profile_pics', default = 'bg_profile_pics/defaultimage.jpg')
+    profile_pics=models.ImageField(null=True,blank=True,upload_to='profile_pics', default = 'profile_pics/defaultimage2.jpg', storage=MediaCloudinaryStorage())
+    background_profile_pics=models.ImageField(null=True,blank=True,upload_to='bg_profile_pics', default = 'bg_profile_pics/defaultimage.jpg', storage=MediaCloudinaryStorage())
     country = models.CharField(max_length=40,null=True,blank=True,default="")
     city = models.CharField(max_length=40,null=True,blank=True,default="")
     bio = models.TextField(blank = True, null = True,default="")
     followers = models.ForeignKey('Follow', on_delete=models.CASCADE,blank=True,null=True,related_name='followers')
     following = models.ForeignKey('Follow', on_delete=models.CASCADE,blank=True,null=True)
     email = models.EmailField(null=True,blank=True)
+    
     def __str__(self):
         return self.user.username
     
@@ -38,6 +49,14 @@ class Post(models.Model):
     def __str__(self):
         return self.user + "'s post"
 
+    def save(self, *args, **kwargs):
+        if self.post_file:
+            if self.post_file.name.endswith(('.jpg','.jpeg','.png','.gif')):
+                self.post_file.storage = MediaCloudinaryStorage()
+            elif self.post_file.name.endswith(('.avi','.mp4','.mov')):
+                self.post_file.storage =  VideoMediaCloudinaryStorage()
+        return super().save(*args, **kwargs)
+    
 class Comments(models.Model):
     author = models.CharField(max_length=100,blank=True,null=True)
     comments = models.TextField(blank= True, null= True)
