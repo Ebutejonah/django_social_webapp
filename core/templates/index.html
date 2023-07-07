@@ -61,15 +61,14 @@
                             <div class="form_data">
                                 {%if post.post_file%}
                                     <a href="{{post.post_file.url}}">
-                                        <!--{%if '.mp4' in post.post_file.url%}-->
-                                        {%if post.post_file.name.endswith(('.mp4','.mkv','.avi','.mov'))%}
+                                        {%if '.mp4' in post.post_file.url%}
                                             <div class="">
                                                 <video controls src="{{post.post_file.url}}" class="cursor-pointer"></video>
                                             </div>  
-                                        <!--{%elif '.mkv' in post.post_file.url%}
+                                        {%elif '.mkv' in post.post_file.url%}
                                         <div class="">
                                             <video controls src="{{post.post_file.url}}" class="cursor-pointer"></video>
-                                        </div>  -->
+                                        </div>
                                         {%else%}
                                             <div class="flex justify-center bg-white dark:bg-gray-800">
                                                 <img src="{{post.post_file.url}}" class="cursor-pointer h-64 object-scale-down" alt="Post Image">
