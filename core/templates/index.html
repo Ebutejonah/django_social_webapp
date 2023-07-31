@@ -21,7 +21,7 @@
                     <input id="postimage" type="file" accept=".jpeg, .jpg, .mp4, .mkv, .png, .gif" class="cursor-pointer text-black bg-gray-100 rounded-md font-normal" name="postimage">
                     <div class="flex justify-between mt-5">
                         <p id="cancelbutton" class="text-black border-2 border-gray-500 rounded-full px-2 bg-gray-100 cursor-pointer hover:bg-red-400 duration-300 hover:text-white">Cancel</p>
-                        <input disabled id="post" type="submit" class="rounded-full border-2 cursor-pointer border-gray-500 px-2 text-black bg-gray-100" value="Post">   
+                        <input accept=".png, .mkv, .jpg, .mp4, .avi, .png" disabled id="post" type="submit" class="rounded-full border-2 cursor-pointer border-gray-500 px-2 text-black bg-gray-100" value="Post">   
                     </div>
                 </form>    
             </div>
@@ -61,17 +61,21 @@
                             <div class="form_data">
                                 {%if post.post_file%}
                                     <a href="{{post.post_file.url}}">
-                                        {%if '.mp4' in post.post_file.url%}
+                                        {%if '.mp4' in post.post_file.name%}
                                             <div class="">
                                                 <video controls src="{{post.post_file.url}}" class="cursor-pointer"></video>
                                             </div>  
-                                        {%elif '.mkv' in post.post_file.url%}
-                                        <div class="">
-                                            <video controls src="{{post.post_file.url}}" class="cursor-pointer"></video>
-                                        </div>
+                                        {%elif '.mkv' in post.post_file.name%}
+                                            <div class="">
+                                                <video controls src="{{post.post_file.url}}" class="cursor-pointer"></video>
+                                            </div>
+                                        {%elif '.avi' in post.post_file.name%}
+                                            <div class="">
+                                                <video controls src="{{post.post_file.url}}" class="cursor-pointer"></video>
+                                            </div>
                                         {%else%}
                                             <div class="flex justify-center bg-white dark:bg-gray-800">
-                                                <img src="{{post.post_file.url}}" class="cursor-pointer h-64 object-scale-down" alt="Post Image">
+                                                <img src="{{post.post_file.url}}" class="cursor-pointer h-64 object-scale-down" alt="Post">
                                             </div>
                                         {%endif%}
                                     </a>
@@ -156,11 +160,9 @@
                             </a>-->
                             
                             <p class="followed dark:text-gray-300"></p>
-                            <button class="follow_btn">
-                                <p class="follow bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
-                                    Follow
-                                </p>
-                            </button>    
+                            <a href="{%url 'follow' otherusername=other_profile.user.username%}" class="follow bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
+                                Follow
+                            </a>   
                         </span>
                     </div> 
                        
@@ -260,65 +262,70 @@ for(i=0;i<posts_ids.length;i++){
 likePost(i)
 }
 
-let other_profiles = document.getElementsByClassName('other_profiles')
-let option = document.getElementsByClassName('follow')
-let followed = document.getElementsByClassName('followed')
-const follow_btn = document.getElementsByClassName('follow_btn')
-let profiles_usernames = []
-let profiles = "{{suggest}}"
-let new_profiles = profiles.replace(/&#x27;/ig, '"')
-let final_profiles = new_profiles.replace(/UUID/ig, '')
-let last_profiles = final_profiles.replaceAll('(', '')
-let finite_profiles = last_profiles.replaceAll(')', '')
-let end_profiles = finite_profiles.replace(/datetime.datetime/ig, '"datetime.datetime')
-let total_profiles = end_profiles.replace(/utc/ig, 'utc"')
-let totals = total_profiles.replace(/None/ig, '""')
-let js_profiles = JSON.parse(totals)
 
-for(i=0;i<other_profiles.length;i++){
-    let profile_username = js_profiles[i]["username"]
-    profiles_usernames.push(profile_username)
-}
 
-for(i=0;i<other_profiles.length;i++){
-    function follow(i){
-        follow_btn[i].addEventListener('click',()=>{
-            let data = {username:profiles_usernames[i]}
-            console.log(totals)
-            console.log(profiles_usernames)
-            fetch("{%url 'follow'%}",{
-                method: "POST",
-                headers: {"Content-Type":"application/json",
-                        "X-CSRFToken": csrftoken},
-                body: JSON.stringify(data),
-            })
-            .then(function(response){
-                responseClone = response.clone()
-                return response.json()
-            })
-            .then(function(data){
-            console.log(data)
-            if (data['checker']==1){
-                follow_btn[i].classList.add('hidden')
-                followed[i].innerHTML = "Following"
+
+
+
+// let other_profiles = document.getElementsByClassName('other_profiles')
+// let option = document.getElementsByClassName('follow')
+// let followed = document.getElementsByClassName('followed')
+// const follow_btn = document.getElementsByClassName('follow_btn')
+// let profiles_usernames = []
+// let profiles = "{{suggest}}"
+// let new_profiles = profiles.replace(/&#x27;/ig, '"')
+// let final_profiles = new_profiles.replace(/UUID/ig, '')
+// let last_profiles = final_profiles.replaceAll('(', '')
+// let finite_profiles = last_profiles.replaceAll(')', '')
+// let end_profiles = finite_profiles.replace(/datetime.datetime/ig, '"datetime.datetime')
+// let total_profiles = end_profiles.replace(/utc/ig, 'utc"')
+// let totals = total_profiles.replace(/None/ig, '""')
+// let js_profiles = JSON.parse(totals)
+
+// for(i=0;i<other_profiles.length;i++){
+//     let profile_username = js_profiles[i]["username"]
+//     profiles_usernames.push(profile_username)
+// }
+
+// for(i=0;i<other_profiles.length;i++){
+//     function follow(i){
+//         follow_btn[i].addEventListener('click',()=>{
+//             let data = {username:profiles_usernames[i]}
+//             console.log(totals)
+//             console.log(profiles_usernames)
+//             fetch("{%url 'follow'%}",{
+//                 method: "POST",
+//                 headers: {"Content-Type":"application/json",
+//                         "X-CSRFToken": csrftoken},
+//                 body: JSON.stringify(data),
+//             })
+//             .then(function(response){
+//                 responseClone = response.clone()
+//                 return response.json()
+//             })
+//             .then(function(data){
+//             console.log(data)
+//             if (data['checker']==1){
+//                 follow_btn[i].classList.add('hidden')
+//                 followed[i].innerHTML = "Following"
                     
-            }
-            else if (data['checker']==0){
-                option[i].classList.remove("bg-red-400","hover:bg-red-500")
-                option[i].classList.add("bg-blue-500","hover:bg-blue-600")
-                option[i].innerHTML = "Follow"
-            }
-            },function(rejectionReason){
-            console.log("Error parson JSON from response:",rejectionReason, responseClone)
-            responseClone.text()
-            .then(function(bodyText){
-                console.log("Received the following instead of valid JSON:", bodyText)
-            })
-        })
-        })
-    }
-follow(i)
-}
+//             }
+//             else if (data['checker']==0){
+//                 option[i].classList.remove("bg-red-400","hover:bg-red-500")
+//                 option[i].classList.add("bg-blue-500","hover:bg-blue-600")
+//                 option[i].innerHTML = "Follow"
+//             }
+//             },function(rejectionReason){
+//             console.log("Error parson JSON from response:",rejectionReason, responseClone)
+//             responseClone.text()
+//             .then(function(bodyText){
+//                 console.log("Received the following instead of valid JSON:", bodyText)
+//             })
+//         })
+//         })
+//     }
+// follow(i)
+// }
 
 </script>
 {%endblock%}

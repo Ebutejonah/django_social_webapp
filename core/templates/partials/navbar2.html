@@ -6,8 +6,8 @@
     <a href="{% url 'profile' username=request.user.username %}" class="text-sm sm:text-lg mx-2 md:mx-6 p-2 sm:p-3 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full"><i class="fa-solid fa-user"></i></a>
     <a href="/" class="hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full text-sm sm:text-lg mx-2 md:mx-6"><i class="fa-solid fa-house p-2 sm:p-3"></i></a>
     <a href="{%url 'search'%}" class="text-sm sm:text-lg p-2 sm:p-3 hover:bg-gray-200 dark:hover:bg-gray-800 mx-2 md:mx-6 rounded-full"><i class="fa-solid fa-magnifying-glass"></i></a>
-    <p id="sun" class="text-sm sm:text-lg p-2 sm:p-3 hover:bg-gray-200 dark:hover:bg-gray-800 mx-2 md:mx-6 rounded-full"><i class="fa-solid fa-sun"></i></p>
-    <p id="moon" class="text-sm sm:text-lg p-2 sm:p-3 rounded-full hover:bg-gray-200 mx-2 md:mx-6 dark:hover:bg-gray-800"><i class="fa-solid fa-moon"></i></p>
+    <p id="sun" class="text-sm sm:text-lg p-2 sm:p-3 hover:bg-gray-200 dark:hover:bg-gray-800 mx-2 md:mx-6 rounded-full cursor-pointer"><i class="fa-solid fa-sun"></i></p>
+    <p id="moon" class="text-sm sm:text-lg p-2 sm:p-3 rounded-full hover:bg-gray-200 mx-2 md:mx-6 dark:hover:bg-gray-800 cursor-pointer"><i class="fa-solid fa-moon"></i></p>
     <a href="{%url 'logout'%}" class="text-sm font-semibold text-white mx-2 md:mx-6 flex justify-end my-4 border-2 rounded-full p-2 border-gray-400 bg-red-500 hover:bg-red-600 duration-500">Logout</a>
 </div>
 {%endblock%}

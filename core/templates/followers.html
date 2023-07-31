@@ -8,8 +8,8 @@
     <div class="flex justify-center items-center max-w-6xl mx-auto bg-white dark:bg-black">
         <div class="border-l-2 border-gray-300 dark:border-gray-600 w-full h-screen">
             <div class="flex justify-between mb-3 px-10 text-xl font-semibold border-b-2 border-gray-300 dark:border-gray-600 pb-2">
-                <a href="followers?username={{user_profile.user.username}}" class="text-blue-600 hover:bg-gray-200 dark:hover:bg-gray-800 px-10 py-2">Followers</a>
-                <a href="following?username={{user_profile.user.username}}" class="hover:bg-gray-200 dark:hover:bg-gray-800 px-10 py-2 text-gray-600 dark:text-white">Following</a>
+                <span class="text-blue-600 hover:bg-gray-200 dark:hover:bg-gray-800 px-10 py-2">Followers</span>
+                <a href="../following?username={{user_profile.user.username}}" class="hover:bg-gray-200 dark:hover:bg-gray-800 px-10 py-2 text-gray-600 dark:text-white">Following</a>
             </div>
             {%if profiles%}
                 {%for profile in profiles reversed%}

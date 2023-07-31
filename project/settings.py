@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from decouple import config
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -47,9 +48,6 @@ INSTALLED_APPS = [
     'theme',
     'django_browser_reload',
     'django_email_verification',
-    #cloudinary apps
-    'cloudinary_storage',
-    'cloudinary',
     
 ]
 
@@ -89,30 +87,30 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-'''DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}'''
-DATABASES = {
-    'default':{
-    'ENGINE':'django.db.backends.postgresql_psycopg2',
-    'NAME': config('PGDATABASE'),
-    'USER':config('PGUSER'),
-    'HOST': config('PGHOST'),
-    'PASSWORD': config('PGPASSWORD'),
-    'PORT':config('PGPORT'),
-    }
 }
+# DATABASES = {
+#     'default':{
+#     'ENGINE':'django.db.backends.postgresql_psycopg2',
+#     'NAME': config('PGDATABASE'),
+#     'USER':config('PGUSER'),
+#     'HOST': config('PGHOST'),
+#     'PASSWORD': config('PGPASSWORD'),
+#     'PORT':config('PGPORT'),
+#     }
+# }
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUD_NAME'),
-    'API_KEY': config('API_KEY'),
-    'API_SECRET': config('API_SECRET')
-}
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': config('CLOUD_NAME'),
+#     'API_KEY': config('API_KEY'),
+#     'API_SECRET': config('API_SECRET')
+# }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.VideoMediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -158,11 +156,11 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR/'media'
 
-'''AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
 AWS_QUERYSTRING_AUTH = False
-AWS_S3_FILE_OVERWRITE = False'''
+AWS_S3_FILE_OVERWRITE = False
 
 #DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
