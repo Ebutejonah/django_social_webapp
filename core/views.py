@@ -22,8 +22,10 @@ def indexView(request):
     except:
         User.DoesNotExist()
         return redirect('/signup')
+    
+    #posts made by the logged in user
+    post = Post.objects.filter(user=request.user.username)      
 
-    post = Post.objects.filter(user=request.user.username)                                     
     user_following = Follow.objects.filter(user=request.user.username)
 
     #getting all the users on the platform
@@ -50,7 +52,7 @@ def indexView(request):
     else:
         msg = False'''
 
-    #getting the Profile object from the User instance above
+    #getting the Profile object of Users the logged in user is not following
     suggested_profile_lists = []
     for users in final_suggestion_list:
         profiles = Profile.objects.filter(user = users)
@@ -62,29 +64,29 @@ def indexView(request):
     #     else:
     #         msg=False
 
-    ##getting users logged in user is not following json format
-    #user_object_json of all those the logged in user is following
-    user_followings_json = []
-    for user_following_json in user_following:
-        user_followed_json = User.objects.filter(username = user_following_json.following)
-        user_followings_json.append(user_followed_json)
+    # ##getting users logged in user is not following json format
+    # #user_object_json of all those the logged in user is following
+    # user_followings_json = []
+    # for user_following_json in user_following:
+    #     user_followed_json = User.objects.filter(username = user_following_json.following)
+    #     user_followings_json.append(user_followed_json)
 
-    #all_users_json
-    all_users_json = User.objects.all()
+    # #all_users_json
+    # all_users_json = User.objects.all()
 
-    #user_object_json of all those the logged in user is not following
-    suggestion_list_json = [x for x in list(all_users_json) if (x not in list(user_followings_json))]
+    # #user_object_json of all those the logged in user is not following
+    # suggestion_list_json = [x for x in list(all_users_json) if (x not in list(user_followings_json))]
     
-    #removing the logged in user object from the suggestion_list_json
-    logged_in_user_json = User.objects.filter(username=request.user.username)
-    new_suggestion_json = [x for x in list(suggestion_list_json) if (x not in list(logged_in_user_json))]
+    # #removing the logged in user object from the suggestion_list_json
+    # logged_in_user_json = User.objects.filter(username=request.user.username)
+    # new_suggestion_json = [x for x in list(suggestion_list_json) if (x not in list(logged_in_user_json))]
     
-    #getting the profile objects from new_suggestion_json
-    suggested_profiles_json = []
-    for users_json in new_suggestion_json:
-        suggested_profile_json = list(Profile.objects.filter(user = users_json).values())
-        suggested_profiles_json.append(suggested_profile_json)
-    suggest = list(chain(*suggested_profiles_json))   
+    # #getting the profile objects from new_suggestion_json
+    # suggested_profiles_json = []
+    # for users_json in new_suggestion_json:
+    #     suggested_profile_json = list(Profile.objects.filter(user = users_json).values())
+    #     suggested_profiles_json.append(suggested_profile_json)
+    # suggest = list(chain(*suggested_profiles_json))   
 
     #getting posts of only users followed by the logged in user and logged in user's posts only
     others_posts = []
@@ -137,7 +139,7 @@ def indexView(request):
             post.save()
             return redirect('/')
     context = {
-                'suggestions':suggest[:4],
+                #'suggestions':suggest[:4],
                 'liked':liked_list,
                 'joined':joined,
                 'posts':joined_posts,
@@ -595,26 +597,21 @@ def followView(request):
 
 @login_required()
 def followView(request, otherusername):
-    if request.method == 'POST':
-        # #getting all the users on the platform
+    #if request.method == 'POST':
+        #getting all the users on the platform
         # all_users = User.objects.all()
-
         # #user_object of all those the logged in user is following
         # user_following = Follow.objects.filter(user=request.user.username)
         # user_following_all = []
         # for user_object_following in user_following:
-        #     user_followed = User.objects.filter(username = user_object_following.following)
-        #     user_following_all.append(user_followed)
-
-        # #User object of all accounts the logged in user is not following
+            # user_followed = User.objects.filter(username = user_object_following.following)
+            # user_following_all.append(user_followed)
+        #User object of all accounts the logged in user is not following
         # new_suggestion_list = [x for x in list(all_users) if (x not in list(user_following_all))]
-
         # logged_in_user = User.objects.filter(username = request.user.username)
-
         # #User object of all accounts the logged in user is not following including the logged in user's
         # final_suggestion_list = [x for x in list(new_suggestion_list) if (x not in list(logged_in_user))]
         # random.shuffle(final_suggestion_list)
-
         # #getting the Profile object from the User instance above
         # suggested_profile_lists = []
         # for users in final_suggestion_list:
@@ -622,8 +619,8 @@ def followView(request, otherusername):
         #     suggested_profile_lists.append(profiles)
         # suggestion = list(chain(*suggested_profile_lists))
 
+
         logged_in_user = request.user.username
-        #otherusername = request.POST['username']
         logged_in_user_object = User.objects.get(username = logged_in_user)
         logged_in_user_profile = Profile.objects.get(user=logged_in_user_object)
         following_object = User.objects.get(username = otherusername)
@@ -635,12 +632,16 @@ def followView(request, otherusername):
             logged_in_user_profile.following = following
             following_profile.followers = following
             logged_in_user_profile.save()
+            following_profile.save()
+            return redirect('/profile/'+otherusername)
         else:
             followed.delete()
-    return redirect('/')
+            return redirect('/profile/'+otherusername)
+        #return redirect('/')
+
+
         #user_followers = Follow.objects.filter(following = other_username)
         #context ={}
-    
         # username = request.user.username
         # user_object = User.objects.get(username = username)
         # user_profile = Profile.objects.get(user=user_object)
