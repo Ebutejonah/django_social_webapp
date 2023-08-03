@@ -18,8 +18,6 @@ class Profile(models.Model):
     country = models.CharField(max_length=40,null=True,blank=True,default="")
     city = models.CharField(max_length=40,null=True,blank=True,default="")
     bio = models.TextField(blank = True, null = True,default="")
-    followers = models.ForeignKey('Follow', on_delete=models.CASCADE,blank=True,null=True,related_name='followers')
-    following = models.ForeignKey('Follow', on_delete=models.CASCADE,blank=True,null=True)
     email = models.EmailField(null=True,blank=True)
     
     def __str__(self):

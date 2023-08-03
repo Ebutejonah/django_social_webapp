@@ -577,17 +577,10 @@ def SearchedUserView(request,name):
 def followView(request):
     otheruser_username = request.GET.get("otherusername")
     username=request.user.username
-    user_profile = Profile.objects.get(username=username)
-    following_object = User.objects.get(username = otheruser_username)
-    following_profile = Profile.objects.get(user=following_object)
     followed = Follow.objects.filter(following=otheruser_username,user=username).first()
     if followed == None:
         following = Follow.objects.create(following=otheruser_username,user=username)
         following.save()
-        user_profile.following = following
-        following_profile.followers = following
-        user_profile.save()
-        following_profile.save()
         return redirect('/profile/'+otheruser_username)
     else:
         followed.delete()
