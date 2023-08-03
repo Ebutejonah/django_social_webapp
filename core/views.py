@@ -176,7 +176,6 @@ def signUpView(request):
                 return redirect('/signup')
             else:
                 user=User.objects.create_user(username=usersname,email=email,password=password,first_name=first_name,last_name=last_name)
-                user.is_active = False
                 send_email(user)
                 #creating a profile object once a user successfully signs in
                 user_model=User.objects.get(username=usersname)
@@ -477,7 +476,7 @@ def ProfileView(request, username):
     user_followers = Follow.objects.filter(following = user_object.username)
     following = len(user_following)
     followers = len(user_followers)
-    user_profile = Profile.objects.get(user = user_object)
+    user_profile = Profile.objects.filter(user = user_object).first()
     post=Post.objects.filter(user=user_profile)
     user_post_length = len(post)
     context={
@@ -493,6 +492,7 @@ def ProfileView(request, username):
 
 @login_required()
 def FollowersView(request,username):
+    profile = Profile.objects.get(username=username)
     user_object = User.objects.get(username = request.user.username)
     user_lists = []
     followers_list = []
@@ -503,12 +503,13 @@ def FollowersView(request,username):
     for user in user_lists:
         user_profiles = Profile.objects.filter(user = user).first()
         followers_list.append(user_profiles)
-    context = {'profiles':followers_list,'user_object':user_object}
+    context = {'profiles':followers_list,'user_object':user_object,'user_profile':profile}
     return render(request,'followers.html',context)
 
 
 @login_required()
 def FollowingView(request,username):
+    profile = Profile.objects.get(username=username)
     user_object = User.objects.get(username = request.user.username)
     user_lists = []
     following_list = []
@@ -519,7 +520,7 @@ def FollowingView(request,username):
     for user in user_lists:
         user_profiles = Profile.objects.filter(user = user).first()
         following_list.append(user_profiles)
-    context = {'profiles':following_list,'user_object':user_object}
+    context = {'profiles':following_list,'user_object':user_object,'user_profile':profile}
     return render(request,'following.html',context)
 
 
@@ -579,7 +580,7 @@ def followView(request):
     user_profile = Profile.objects.get(username=username)
     following_object = User.objects.get(username = otheruser_username)
     following_profile = Profile.objects.get(user=following_object)
-    followed = Follow.objects.filter(following=otheruser_username,user=username,user_profile=user_profile).first()
+    followed = Follow.objects.filter(following=otheruser_username,user=username).first()
     if followed == None:
         following = Follow.objects.create(following=otheruser_username,user=username)
         following.save()
@@ -589,8 +590,7 @@ def followView(request):
         following_profile.save()
         return redirect('/profile/'+otheruser_username)
     else:
-        unfollow = Follow.objects.get(following=otheruser_username, user=username)
-        unfollow.delete()
+        followed.delete()
         return redirect('/profile/'+otheruser_username)
 
 # @login_required()

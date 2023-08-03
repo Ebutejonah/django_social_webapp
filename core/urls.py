@@ -20,7 +20,6 @@ urlpatterns = [
     path('searched/<str:name>/', SearchedUserView, name = 'searched'),
     path('comments/<str:post_id>/', CommentView, name = 'comments'),
     path('delete-post/',deletePost,name='delete-post'),
-    #path('json/',indexView,name='json'),
     path('delete_account/', delete_accountview,name="delete_account"),
     path('confirm_delete_account/',confirm_delete_accountview,name="confirm_delete_account"),
 
@@ -36,5 +35,4 @@ urlpatterns = [
     
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name = 'registration/reset_complete.html'),
      name='password_reset_complete'),
-
 ]

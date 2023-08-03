@@ -56,7 +56,7 @@ class Comments(models.Model):
 class Follow(models.Model):
     user = models.CharField(max_length=200,blank=True,null=True)
     following = models.CharField(max_length=200,blank=True,null=True)
-    user_profile = models.ForeignKey(Profile,on_delete=models.CASCADE,null=True,blank=True)
+    #user_profile = models.ForeignKey(Profile,on_delete=models.CASCADE,null=True,blank=True)
 
     def __str__(self):
         return self.user + " follows @" + self.following
