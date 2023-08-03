@@ -34,7 +34,7 @@ def indexView(request):
     #user_object of all those the logged in user is following
     user_following_all = []
     for user_object_following in user_following:
-        user_followed = User.objects.filter(username = user_object_following.following)
+        user_followed = User.objects.get(username = user_object_following.following)
         user_following_all.append(user_followed)
 
     #User object of all accounts the logged in user is not following
@@ -55,7 +55,7 @@ def indexView(request):
     #getting the Profile object of Users the logged in user is not following
     suggested_profile_lists = []
     for users in final_suggestion_list:
-        profiles = Profile.objects.filter(user = users)
+        profiles = Profile.objects.filter(id_user = users.id)
         suggested_profile_lists.append(profiles)
     suggestion = list(chain(*suggested_profile_lists))
     # for suggested in suggested_profile_lists:
@@ -244,9 +244,7 @@ def delete_accountview(request):
 def confirm_delete_accountview(request):
     user_id = request.GET.get('user_id')
     user = User.objects.filter(id = user_id).first()
-    profile = Profile.objects.filter(user = user).first()
     user.delete()
-    profile.delete()
     return redirect('/signup')
    
         
@@ -574,15 +572,14 @@ def SearchedUserView(request,name):
     return render(request,'searcheduser.html',context)
 
 
-'''@login_required()
+@login_required()
 def followView(request):
+    otheruser_username = request.GET.get("otherusername")
     username=request.user.username
-    user_object = User.objects.get(username=username)
-    user_profile = Profile.objects.get(user=user_object)
-    otheruser_username = request.GET.get('username')
+    user_profile = Profile.objects.get(username=username)
     following_object = User.objects.get(username = otheruser_username)
     following_profile = Profile.objects.get(user=following_object)
-    followed = Follow.objects.filter(following=otheruser_username,user=username).first()
+    followed = Follow.objects.filter(following=otheruser_username,user=username,user_profile=user_profile).first()
     if followed == None:
         following = Follow.objects.create(following=otheruser_username,user=username)
         following.save()
@@ -592,11 +589,12 @@ def followView(request):
         following_profile.save()
         return redirect('/profile/'+otheruser_username)
     else:
-        followed.delete()
-        return redirect('/profile/'+otheruser_username)'''
+        unfollow = Follow.objects.get(following=otheruser_username, user=username)
+        unfollow.delete()
+        return redirect('/profile/'+otheruser_username)
 
-@login_required()
-def followView(request, otherusername):
+# @login_required()
+# def followView(request, otherusername):
     #if request.method == 'POST':
         #getting all the users on the platform
         # all_users = User.objects.all()
@@ -620,23 +618,23 @@ def followView(request, otherusername):
         # suggestion = list(chain(*suggested_profile_lists))
 
 
-        logged_in_user = request.user.username
-        logged_in_user_object = User.objects.get(username = logged_in_user)
-        logged_in_user_profile = Profile.objects.get(user=logged_in_user_object)
-        following_object = User.objects.get(username = otherusername)
-        following_profile = Profile.objects.get(user=following_object)
-        followed = Follow.objects.filter(following = otherusername, user=logged_in_user).first()
-        if followed == None:
-            following = Follow.objects.create(following = otherusername, user=logged_in_user,user_profile=logged_in_user_profile)
-            following.save()
-            logged_in_user_profile.following = following
-            following_profile.followers = following
-            logged_in_user_profile.save()
-            following_profile.save()
-            return redirect('/profile/'+otherusername)
-        else:
-            followed.delete()
-            return redirect('/profile/'+otherusername)
+        # logged_in_user = request.user.username
+        # logged_in_user_object = User.objects.get(username = logged_in_user)
+        # logged_in_user_profile = Profile.objects.get(user=logged_in_user_object)
+        # following_object = User.objects.get(username = otherusername)
+        # following_profile = Profile.objects.get(user=following_object)
+        # followed = Follow.objects.filter(following = otherusername, user=logged_in_user).first()
+        # if followed == None:
+        #     following = Follow.objects.create(following = otherusername, user=logged_in_user,user_profile=logged_in_user_profile)
+        #     following.save()
+        #     logged_in_user_profile.following = following
+        #     following_profile.followers = following
+        #     logged_in_user_profile.save()
+        #     following_profile.save()
+        #     return redirect('/profile/'+otherusername)
+        # else:
+        #     followed.delete()
+        #     return redirect('/profile/'+otherusername)
         #return redirect('/')
 
 

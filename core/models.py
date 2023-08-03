@@ -40,25 +40,6 @@ class Post(models.Model):
     def __str__(self):
         return self.user + "'s post"
 
-    # def save(self, *args, **kwargs):
-    #     if self.post_file:
-    #         if self.post_file.name.endswith(('.avi','.mp4','.mkv')):
-    #             settings.DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.VideoMediaCloudinaryStorage'
-    #             self.post_file.storage =  VideoMediaCloudinaryStorage()
-    #         else:
-    #             settings.DEFAULT_FILE_STORAGE = 'cloudinary_storgae.storage.MediaCloudinaryStorage'
-    #             self.post_file.storage = MediaCloudinaryStorage()
-    #     return super().save(*args, **kwargs)
-    
-    # def __unicode__(self):
-    #     return self.post_file
-
-    def find_typecheck(self,*args,**kwargs):
-        if self.post_file.name.endswith(('.jpg','.jpeg','.gif','.png')):
-            video = 0
-        elif self.post_file.name.endswith(('.mp4','.avi','.mkv')):
-                video = 1
-        return video
     
 class Comments(models.Model):
     author = models.CharField(max_length=100,blank=True,null=True)
@@ -68,7 +49,7 @@ class Comments(models.Model):
     post = models.ForeignKey(Post, on_delete = models.CASCADE,null=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null = True, blank = True)
 
-    class  Meta:
+    class Meta:
         verbose_name_plural = 'Comments'
 
 
@@ -78,7 +59,7 @@ class Follow(models.Model):
     user_profile = models.ForeignKey(Profile,on_delete=models.CASCADE,null=True,blank=True)
 
     def __str__(self):
-        return self.user + " following @" + self.following
+        return self.user + " follows @" + self.following
 
 
 class LikePost(models.Model):

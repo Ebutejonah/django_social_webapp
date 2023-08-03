@@ -26,17 +26,17 @@
                             </p>
                         {%endif%}
                     </a>-->
-                    <button class="follow_button" id="follow_button">
-                        {%if is_following%}
-                            <a href="{%url 'follow' otherusername=user_profile.user.username%}" class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-red-400 hover:bg-red-500 duration-500">
-                                Unfollow
-                            </a>
-                        {%else%}
-                            <a href="{%url 'follow' otherusername=user_profile.user.username%}" class="follow text-white flex p-2 items-center px-2 border-2 rounded-full bg-blue-500 hover:bg-blue-600 duration-500">
-                                Follow
-                            </a>
-                        {%endif%}
-                    </button>
+                    
+                    {%if is_following%}
+                        <a href="/follow?otherusername={{user_profile.user.username}}" class="text-white flex p-2 items-center px-2 border-2 rounded-full bg-red-400 hover:bg-red-500 duration-500">
+                            Unfollow
+                        </a>
+                    {%else%}
+                        <a href="/follow?otherusername={{user_profile.user.username}}" class="text-white flex p-2 items-center px-2 border-2 rounded-full bg-blue-500 hover:bg-blue-600 duration-500">
+                            Follow
+                        </a>
+                    {%endif%}
+                    
                 {%endif%}
                 </span>   
             </div>
@@ -205,72 +205,3 @@
     // 
 </script>
 {%endblock%}
-function getCookie(name) {
-    // let cookieValue = null;
-    // if (document.cookie && document.cookie !== '') {
-    //     const cookies = document.cookie.split(';');
-    //     for (let i = 0; i < cookies.length; i++) {
-    //         const cookie = cookies[i].trim();
-    //         // Does this cookie string begin with the name we want?
-    //         if (cookie.substring(0, name.length + 1) === (name + '=')) {
-    //             cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-    //             break;
-    //         }
-    //     }
-    // }
-    // return cookieValue;
-    // }
-    // const csrftoken = getCookie('csrftoken');
-
-    // let user = '{{user_object.username}}'
-    // const follow_btn = document.getElementById('follow')
-    // const unfollow_btn = document.getElementById('unfollow')
-    // const num_of_followers = document.getElementById('num_of_followers')
-    // let url = "{%url 'follow'%}"
-    // const follow_btn1 = document.getElementById('follow_button')
-    // function follow(){
-    // follow_btn1.addEventListener('click', ()=>{
-           
-    //     let data = {username:user}
-    //     fetch(url,{
-    //         method: "POST",
-    //         headers: {"Content-Type":"application/json",
-    //                 "X-CSRFToken": csrftoken},
-    //         body: JSON.stringify(data),
-    //     })
-    //     .then(function (response){
-    //         responseClone = response.clone()
-    //         return response.json()
-    //     })
-    //     .then(function(data){
-    //         console.log(data)
-    //         if (data['checker']==1){
-    //             follow_btn.classList.remove("bg-blue-500","hover:bg-blue-600")
-    //             follow_btn.classList.add("bg-red-400","hover:bg-red-500")
-    //             follow_btn.innerHTML = "Unfollow"
-    //         }
-    //         else if (data['checker']==0){
-    //             follow_btn.classList.remove("bg-red-400","hover:bg-red-500")
-    //             follow_btn.classList.add("bg-blue-500","hover:bg-blue-600")
-    //             follow_btn.innerHTML = "Follow"
-    //         }
-    //         if (data['num_of_followers']==0){
-    //             num_of_followers.innerHTML = data['num_of_followers'] + " followers"
-    //         }
-    //         if (data['num_of_followers']==1){
-    //             num_of_followers.innerHTML = data['num_of_followers'] + " follower"
-    //         }
-    //         else{
-    //             num_of_followers.innerHTML = data['num_of_followers'] + " followers"
-    //         }
-    //     },function(rejectionReason){
-    //         console.log("Error parson JSON from response:",rejectionReason, responseClone)
-    //         responseClone.text()
-    //         .then(function(bodyText){
-    //             console.log("Received the following instead of valid JSON:", bodyText)
-    //         })
-    //     })
-    // })
- 
-    // }
-    // follow()

@@ -30,7 +30,7 @@
                         {%if profile.user.username == profile.followers.following%}
                             <p class="px-2 bg-white rounded-md duration-300 hover:bg-gray-200">Following</p>
                         {%else%}
-                            <a href="/follow?username={{profile.user.username}}"><p class="px-2 bg-white rounded-md duration-300 hover:bg-gray-200">Follow Back</p></a>
+                            <a href="/follow?otherusername={{profile.user.username}}"><p class="px-2 bg-white rounded-md duration-300 hover:bg-gray-200">Follow Back</p></a>
                         {%endif%}
                     </div>
                 </div>

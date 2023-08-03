@@ -5,11 +5,11 @@
     <div class="flex justify-center pb-4 sticky top-0 bg-white dark:bg-black z-10">
         {%include 'partials/navbar2.html'%}
     </div>
-    <section class="post_id flex justify-center mx-auto bg-white dark:bg-black max-w-6xl">
+    <section class="flex justify-center mx-auto bg-white dark:bg-black max-w-6xl">
         {%if posts%}
-        <div class = "container max-w-xl border-x-2 px-2 border-gray-200 dark:border-gray-600 pb-20 sm:pb-0">
+            <div class = "container max-w-xl border-x-2 px-2 border-gray-200 dark:border-gray-600 pb-20 sm:pb-0">
         {%else%}
-        <div class = "container max-w-xl border-x-2 px-2 border-gray-200 dark:border-gray-600 pb-20 sm:pb-0">
+            <div class = "container max-w-xl border-x-2 px-2 border-gray-200 dark:border-gray-600 pb-20 sm:pb-0">
         {%endif%}
             <a href="{% url 'profile' username=user_object.username %}">
                 <p class="text-blue-600 text-lg font-bold p-4 cursor-pointer">@{{user_profile.user.username}}</p>   
@@ -18,7 +18,7 @@
             <div class="mr-0 rounded-md px-2 pt-6">
                 <form action="" id="post_button" method="POST" enctype="multipart/form-data" class="post_form">{%csrf_token%}
                     <textarea id="caption" type="text" autocomplete="off" class="resize-none mt-2 w-full h-36 border-2 pl-2 rounded-md" name="caption" placeholder="What's on your mind?"></textarea>
-                    <input id="postimage" type="file" accept=".jpeg, .jpg, .mp4, .mkv, .png, .gif" class="cursor-pointer text-black bg-gray-100 rounded-md font-normal" name="postimage">
+                    <input id="postimage" type="file" accept=".jpeg, .jpg, .mp4, .mkv, .png, .gif, .avi" class="cursor-pointer text-black bg-gray-100 rounded-md font-normal" name="postimage">
                     <div class="flex justify-between mt-5">
                         <p id="cancelbutton" class="text-black border-2 border-gray-500 rounded-full px-2 bg-gray-100 cursor-pointer hover:bg-red-400 duration-300 hover:text-white">Cancel</p>
                         <input accept=".png, .mkv, .jpg, .mp4, .avi, .png" disabled id="post" type="submit" class="rounded-full border-2 cursor-pointer border-gray-500 px-2 text-black bg-gray-100" value="Post">   
@@ -142,34 +142,32 @@
         </div>
         <div class="display-none lg:flex flex-col w-full">
             <div>
-                <p class="dark:text-gray-200 text-gray-900 px-2 py-4 font-semibold border-t-2 border-gray-200 mt-5 dark:border-gray-700">Suggested For You</p>
                 {%if other_profiles%}
-                {%for other_profile in other_profiles%}
-                    
-                    <div class="other_profiles flex justify-between bg-gray-100 dark:bg-gray-900  m-7 p-4 rounded-md">
-                        <a href="{% url 'profile' username=other_profile.user.username %}">
-                            <div>
-                                <p class="text-black dark:text-gray-200 pl-2 pb-2 font-semibold">@{{other_profile.user.username}}</p>
-                                <img src="{{other_profile.profile_pics.url}}" class="profile_img w-24 h-24 border-2 border-gray-300 dark:border-0" alt="">
-                            </div>
-                        </a>
-                        <span class="my-auto">
-                            <!--<a href="{% url 'profile' username=other_profile.user.username %}" name="username">
-                                <p class="bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
-                                    View Profile
-                                </p>
-                            </a>-->
-                            
-                            <!-- <p class="followed dark:text-gray-300"></p> -->
-                            <a href="{%url 'follow' otherusername=other_profile.user.username%}" class="bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
-                                Follow
-                            </a>   
-                        </span>
-                    </div> 
-                       
-                {%endfor%}
+                    <p class="dark:text-gray-200 text-gray-900 px-2 py-4 font-semibold border-t-2 border-gray-200 mt-5 dark:border-gray-700">Suggested For You</p>
+                    {%for other_profile in other_profiles%}
+                        <div class="flex justify-between bg-gray-100 dark:bg-gray-900  m-7 p-4 rounded-md">
+                            <a href="{% url 'profile' username=other_profile.user.username %}">
+                                <div>
+                                    <p class="text-black dark:text-gray-200 pl-2 pb-2 font-semibold">@{{other_profile.user.username}}</p>
+                                    <img src="{{other_profile.profile_pics.url}}" class="profile_img w-24 h-24 border-2 border-gray-300 dark:border-0" alt="">
+                                </div>
+                            </a>
+                            <span class="my-auto">
+                                <!--<a href="{% url 'profile' username=other_profile.user.username %}" name="username">
+                                    <p class="bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
+                                        View Profile
+                                    </p>
+                                </a>-->
+                                
+                                <!-- <p class="followed dark:text-gray-300"></p> -->
+                                <a href="/follow?otherusername={{other_profile.user.username}}" class="bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
+                                    Follow
+                                </a>   
+                            </span>
+                        </div>  
+                    {%endfor%}
                 {%else%}
-                <p>Enjoy Social Book!</p>
+                    <p class="dark:text-gray-200 text-gray-900 px-2 py-4 font-semibold border-t-2 border-gray-200 mt-5 dark:border-gray-700">Enjoy Social Book!</p>
                 {%endif%}
             </div>    
         </div>
@@ -269,62 +267,3 @@ likePost(i)
 
 </script>
 {%endblock%}
-// let other_profiles = document.getElementsByClassName('other_profiles')
-// let option = document.getElementsByClassName('follow')
-// let followed = document.getElementsByClassName('followed')
-// const follow_btn = document.getElementsByClassName('follow_btn')
-// let profiles_usernames = []
-// let profiles = "{{suggest}}"
-// let new_profiles = profiles.replace(/&#x27;/ig, '"')
-// let final_profiles = new_profiles.replace(/UUID/ig, '')
-// let last_profiles = final_profiles.replaceAll('(', '')
-// let finite_profiles = last_profiles.replaceAll(')', '')
-// let end_profiles = finite_profiles.replace(/datetime.datetime/ig, '"datetime.datetime')
-// let total_profiles = end_profiles.replace(/utc/ig, 'utc"')
-// let totals = total_profiles.replace(/None/ig, '""')
-// let js_profiles = JSON.parse(totals)
-
-// for(i=0;i<other_profiles.length;i++){
-//     let profile_username = js_profiles[i]["username"]
-//     profiles_usernames.push(profile_username)
-// }
-
-// for(i=0;i<other_profiles.length;i++){
-//     function follow(i){
-//         follow_btn[i].addEventListener('click',()=>{
-//             let data = {username:profiles_usernames[i]}
-//             console.log(totals)
-//             console.log(profiles_usernames)
-//             fetch("{%url 'follow'%}",{
-//                 method: "POST",
-//                 headers: {"Content-Type":"application/json",
-//                         "X-CSRFToken": csrftoken},
-//                 body: JSON.stringify(data),
-//             })
-//             .then(function(response){
-//                 responseClone = response.clone()
-//                 return response.json()
-//             })
-//             .then(function(data){
-//             console.log(data)
-//             if (data['checker']==1){
-//                 follow_btn[i].classList.add('hidden')
-//                 followed[i].innerHTML = "Following"
-                    
-//             }
-//             else if (data['checker']==0){
-//                 option[i].classList.remove("bg-red-400","hover:bg-red-500")
-//                 option[i].classList.add("bg-blue-500","hover:bg-blue-600")
-//                 option[i].innerHTML = "Follow"
-//             }
-//             },function(rejectionReason){
-//             console.log("Error parson JSON from response:",rejectionReason, responseClone)
-//             responseClone.text()
-//             .then(function(bodyText){
-//                 console.log("Received the following instead of valid JSON:", bodyText)
-//             })
-//         })
-//         })
-//     }
-// follow(i)
-// }
