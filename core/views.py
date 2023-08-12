@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render,redirect
 from .forms import ProfileForm
 from .models import Search, Profile, Post, LikePost, Follow, Comments
@@ -43,14 +44,8 @@ def indexView(request):
 
     #User object of all accounts the logged in user is not following including the logged in user's
     final_suggestion_list = [x for x in list(new_suggestion_list) if (x not in list(logged_in_user))]
-    random.shuffle(final_suggestion_list)
 
-    #User object of accounts the logged in user is following:
-    '''following = [x for x in list(all_users) if (x not in list(final_suggestion_list))]
-    if following:
-        msg = True
-    else:
-        msg = False'''
+    random.shuffle(final_suggestion_list)
 
     #getting the Profile object of Users the logged in user is not following
     suggested_profile_lists = []
@@ -58,35 +53,7 @@ def indexView(request):
         profiles = Profile.objects.filter(id_user = users.id)
         suggested_profile_lists.append(profiles)
     suggestion = list(chain(*suggested_profile_lists))
-    # for suggested in suggested_profile_lists:
-    #     if suggested:
-    #         msg=True
-    #     else:
-    #         msg=False
 
-    # ##getting users logged in user is not following json format
-    # #user_object_json of all those the logged in user is following
-    # user_followings_json = []
-    # for user_following_json in user_following:
-    #     user_followed_json = User.objects.filter(username = user_following_json.following)
-    #     user_followings_json.append(user_followed_json)
-
-    # #all_users_json
-    # all_users_json = User.objects.all()
-
-    # #user_object_json of all those the logged in user is not following
-    # suggestion_list_json = [x for x in list(all_users_json) if (x not in list(user_followings_json))]
-    
-    # #removing the logged in user object from the suggestion_list_json
-    # logged_in_user_json = User.objects.filter(username=request.user.username)
-    # new_suggestion_json = [x for x in list(suggestion_list_json) if (x not in list(logged_in_user_json))]
-    
-    # #getting the profile objects from new_suggestion_json
-    # suggested_profiles_json = []
-    # for users_json in new_suggestion_json:
-    #     suggested_profile_json = list(Profile.objects.filter(user = users_json).values())
-    #     suggested_profiles_json.append(suggested_profile_json)
-    # suggest = list(chain(*suggested_profiles_json))   
 
     #getting posts of only users followed by the logged in user and logged in user's posts only
     others_posts = []
@@ -94,7 +61,8 @@ def indexView(request):
     for profile in user_following:
         following_post = Post.objects.filter(user = profile.following)
         others_posts.append(following_post)
-    
+
+
     all_others_posts = others_posts
     user_posts.append(post)
     all_following_posts=list(chain(*all_others_posts))
@@ -107,7 +75,7 @@ def indexView(request):
         liked_by_user = LikePost.objects.filter(liked_by = request.user.username, post_id = each_post.id)
         liked_list.append(liked_by_user)
 
-    ##to get the json list of posts of user and those followed by user
+    #to get the json list of posts of user and those followed by user
     #posts followed by user
     other_posts_json = []
     for profile_json in user_following:
@@ -120,7 +88,8 @@ def indexView(request):
     post_json = list(Post.objects.filter(user=request.user.username).values())
     joined = all_following_json + post_json
     print(joined)
-    
+
+
     if request.method == 'POST':
         if request.FILES.get('postimage') != None and request.POST['caption'] == None:
             post_file = request.FILES.get('postimage')
@@ -145,7 +114,7 @@ def indexView(request):
                 'posts':joined_posts,
                 'user_profile':user_profile,
                 'other_profiles':suggestion[:4],
-                'user_object':user_object,   
+                'user_object':user_object,      
             }
     return render(request,'index.html',context)
 

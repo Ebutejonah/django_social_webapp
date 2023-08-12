@@ -134,7 +134,7 @@
                     {%endfor%}
                 </div>
             {%else%}
-            <div class="pb-28">
+            <div class="h-screen">
                 <p class="dark:text-gray-100 text-black text-2xl text-center font-semibold mt-32 px-2 pb-4">Welcome to <span class="text-blue-600 italic">Social Book</span> &nbsp;<i class="fa-solid fa-users text-blue-600 p-4 bg-gray-300 rounded-full"></i></p>
                 <p class="dark:text-gray-300 text-black text-center font-semibold text-xl px-2">Posts you upload and those of accounts you follow will be displayed here.</p>
             </div>
@@ -153,15 +153,8 @@
                                 </div>
                             </a>
                             <span class="my-auto">
-                                <!--<a href="{% url 'profile' username=other_profile.user.username %}" name="username">
-                                    <p class="bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
-                                        View Profile
-                                    </p>
-                                </a>-->
-                                
-                                <!-- <p class="followed dark:text-gray-300"></p> -->
-                                <a href="/follow?otherusername={{other_profile.user.username}}" class="bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
-                                    Follow
+                                <a href="{% url 'profile' username=other_profile.user.username %}" class="bg-blue-600 text-white p-3 rounded-full cursor-pointer hover:bg-blue-500 duration-500">
+                                    View Profile
                                 </a>   
                             </span>
                         </div>  
