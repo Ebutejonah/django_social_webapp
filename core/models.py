@@ -48,7 +48,7 @@ class Comments(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null = True, blank = True)
 
     class Meta:
-        verbose_name_plural = 'Comments'
+        verbose_name_plural = "Comments"
 
 
 class Follow(models.Model):
